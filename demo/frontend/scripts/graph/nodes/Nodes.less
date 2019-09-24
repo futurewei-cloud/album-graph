@@ -1,0 +1,77 @@
+@import (reference) '../ForceGraph.less';
+
+.force-node {
+	fill: rgba(0, 160, 255, 0.5);
+	opacity: 0.8;
+	transition: opacity @forceAnimationDuration ease-out;
+	stroke: transparent;
+	stroke-width: 8px;
+
+	&.primary {
+		opacity: 1;
+		cursor: pointer;
+	}
+
+	&.secondary {
+		opacity: 0.3;
+	}
+
+	&.tertiary {
+		opacity: 0.15;
+	}
+
+	&.selected {
+		stroke-width: 12px;
+		stroke: #0AF;
+		stroke-opacity: 0.5;
+	}
+
+	.node-icon {
+		font-size: 5.5em;
+		fill: rgba(255, 255, 255, 0.1);
+		transform: translateY(0.33em);
+	}
+
+	.node-label {
+		fill: @fontColor;
+		transform: translateY(4px);
+	}
+
+	text {
+		stroke: none;
+		text-anchor: middle;
+	}
+}
+
+.highlighted-node {
+	fill: transparent;
+	stroke: @highlightedNodeColor;
+	stroke-width: 4px;
+	opacity: 1;
+	pointer-events: none;
+}
+
+.tooltip {
+	position: absolute;
+	background: #333;
+	padding: 4px;
+	border-radius: 4px;
+
+	&:before {
+		content: '';
+		position: absolute;
+		background: #333;
+		top: 6px;
+		left: -4px;
+		height: 14px;
+		width: 14px;
+		transform: rotate(45deg);
+	}
+
+	img {
+		display: block;
+		position: relative;
+		max-width: 200px;
+		max-height: 200px;
+	}
+}

@@ -1,0 +1,25 @@
+@import (reference) '../ForceGraph.less';
+
+.force-link {
+	fill: @fontColor;
+	opacity: 0.15;
+	transition: opacity @forceAnimationDuration ease-out;
+	pointer-events: none;
+
+	&.primary {
+		opacity: 0.75;
+	}
+
+	&.secondary {
+		opacity: 0.25;
+	}
+
+	&.tertiary {
+		opacity: 0.05;
+	}
+
+	&.highlighted {
+		fill: fade(@highlightedNodeColor, 50);
+		opacity: 1;
+	}
+}

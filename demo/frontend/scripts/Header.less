@@ -1,0 +1,28 @@
+
+.control-layer {
+	header {
+		padding: 0 0 0 0.75em;
+		pointer-events: none;
+
+		> * {
+			pointer-events: all;
+		}
+
+		.is-working {
+			color: @fontColor;
+			font-size: 0.7em;
+			letter-spacing: 0.15em;
+			text-transform: uppercase;
+			pointer-events: none;
+		}
+
+		> .heading {
+			margin: 6px 0;
+		}
+	}
+
+	> div {
+		height: 100%;
+		width: 100%;
+	}
+}

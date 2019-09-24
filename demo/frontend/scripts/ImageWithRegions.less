@@ -1,0 +1,63 @@
+@highlightColor: #fff;
+@validColor: #2d3;
+@errorColor: #f11;
+@borderThickness: 2px;
+
+.image-wrapper {
+	position: relative;
+	background: red;
+	font-size: 0;
+
+	position: absolute;
+	top: 0;
+	left: 0;
+
+	> img {
+		max-width: 100%;
+		max-height: 100%;
+	}
+
+	> div {
+		position: absolute;
+		border: @borderThickness solid fade(@highlightColor, 80%);
+		border-radius: 4px;
+		box-shadow: 0 0 24px rgba(0, 0, 0, 0.5);
+
+		&.valid {
+			border-color: @validColor;
+
+			div {
+				background: @validColor;
+				color: white;
+				font-weight: normal;
+				text-shadow: 0 0 4px black;
+			}
+		}
+
+		&.error {
+			border-color: @errorColor;
+
+			div {
+				background: @errorColor;
+				color: white;
+				font-weight: normal;
+				text-shadow: 0 0 4px black;
+			}
+		}
+
+		div {
+			z-index: 1;
+			position: absolute;
+			margin: -@borderThickness;
+			padding: 2px 4px;
+			background: @highlightColor;
+			border-bottom-right-radius: 4px;
+			border-top-left-radius: 4px;
+			color: #555;
+			font-size: 10px;
+			font-weight: bold;
+			text-transform: uppercase;
+			letter-spacing: 0.05em;
+		}
+	}
+}

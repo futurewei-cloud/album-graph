@@ -1,0 +1,48 @@
+@import (reference) './app.less';
+
+.drawer {
+	box-shadow: 0 0 1rem @largeShadowColor;
+	background: fade(black, 70%);
+	pointer-events: all;
+
+	.closed-heading {
+		position: absolute;
+		transform: rotate(90deg);
+		top: 0;
+		left: 0.75em;
+		transform-origin: left center;
+	}
+
+	h6 {
+		padding: 0.25rem 0;
+
+		.icon {
+			font-size: 1.4em;
+			transform: translateY(-0.05em);
+		}
+	}
+
+	.tag {
+		.icon {
+			color: darken(@highlightColor, 20%);
+		}
+	}
+
+	.location {
+		.icon {
+			color: darken(@locationColor, 20%);
+		}
+	}
+
+	.time {
+		.icon {
+			color: darken(@timeColor, 20%);
+		}
+	}
+
+	.person {
+		.icon {
+			color: darken(@facesColor, 20%);
+		}
+	}
+}
