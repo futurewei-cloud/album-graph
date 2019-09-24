@@ -28,7 +28,7 @@ The goal of album graph engine design is to provide: (1) a data representation a
 
 The framework of an album graph organizes resources (e.g. photos) as a layered network (a.k.a. multi-partite graph) with possible internal connections. It basically consists of three layers, the _resource layer_, the _region layer_, and the _tag layer_. Each layer is a set of entities of the same *type*, i.e. photos, regions (e.g. bounding boxes), and tags.
 
-![drawing](resources/threeLayers.jpg=50x50)
+![drawing](resources/threeLayers.jpg)
 
 We organize entities in the above approach for the following purpose: The resource layer is to facilitate the album management by associating physical files to the regions. a photo can include one or more regions, separate or overlapping. When no region is specified, the system creates a single region that covers the whole area of a picture. Each region must be tagged, where a tag is represented as a node in the tag layer. The tag is essentially a label to a region, a categorical variable or a numberic value to describe some property. For example, a region can be tagged as a face with a person's name.
 
@@ -44,7 +44,7 @@ We extend the above data representation to support arbitrary heterogeneous graph
 
 In the following figure originally published in [1], several metadata of an image extracted out for media management. If under the heterogeneous graph model, each type of the metadata form a set of vertices ![](https://latex.codecogs.com/gif.latex?V_t  ). Note that the edges can be between any two vertices in the graph. Therefore, it describes the relationship of two vertices within the same type or across different types. An example of relationship within the same type can be two objects in the same image e.g. a man riding on a horse, and the that across two types can be a location and an image taken at that spot.  
 
-![drawing](resources/media_ds.jpg=50x50)
+![drawing](resources/media_ds.jpg)
 
 **Entity retrieval**: Given a set of information retrievals ![](https://latex.codecogs.com/gif.latex?R%20%3D%20%5C%7BR_k%5C%7D%5EK_%7Bk%3D1%7D ), where ![](https://latex.codecogs.com/gif.latex?R_k ) can be as simple as a module to extract the size/dimension of an image, or as complex as a computer vision model to detect an object from an image, we have ![](https://latex.codecogs.com/gif.latex?%5C%7Bv%5Et_%7B1%7D%2C%20v%5Et%27_%7B2%7D%2C%20%5Ccdots%5C%7D%20%3D%20R_k%28I%29 ), where *I* is a given input image and the output is a set of entity instances of types ![](https://latex.codecogs.com/gif.latex?t ), ![](https://latex.codecogs.com/gif.latex?t%27 ), etc. The image and the retrieved entities are added to a heterogeneous graph ![](https://latex.codecogs.com/gif.latex?%7B%5Ccal%20G%7D%28V%2CE%29 ), each being a vertex of corresponding tags.
 
