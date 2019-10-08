@@ -901,7 +901,7 @@ def get_result(need, arg, dataset):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        '--dataset', defaut='s', help='choose dataset: s(200 images),l(4366images)')
+        '--dataset', default='s', help='choose dataset: s(200 images),l(4366images)')
     parser.add_argument('--img', help='input image_id')
     parser.add_argument('--tag', help='input tag_id :"Person","Tree",....')
     args = parser.parse_args()

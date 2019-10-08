@@ -1,0 +1,15 @@
+numpy
+scipy
+scikit-learn
+Pillow
+geopy
+urllib3
+certifi
+requests
+datetime
+matplotlib
+jsonify
+futures
+gremlinpython
+flask
+flask_cors
