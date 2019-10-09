@@ -1,0 +1,12 @@
+werkzeug
+flask
+tornado
+numpy
+pandas
+pillow
+pyyaml
+requests
+easydict
+sklearn
+python-decouple
+boto3

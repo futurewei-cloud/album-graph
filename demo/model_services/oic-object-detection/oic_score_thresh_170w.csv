@@ -1,0 +1,388 @@
+name,threshold
+Ladder,0.48
+Toothbrush,0.7
+Syringe,0.5
+Sink,0.39
+Apple,0.69
+Paddle,0.8
+Snowman,0.4442
+Chopsticks,0.0373
+Bird,0.33
+Parking meter,0.58
+Traffic light,0.57
+Croissant,0.75
+Cucumber,0.68
+Radish,0.18
+Towel,0.41
+Doll,0.55
+Skull,0.46
+Washing machine,0.89
+Glove,0.55
+Tick,0.5
+Belt,0.69
+Sunglasses,0.51
+Banjo,0.27
+Cart,0.77
+Ball,0.64
+Bicycle,0.46
+Boat,0.45
+Surfboard,0.42
+Boot,0.25
+Headphones,0.43
+Hot dog,0.2938
+Shorts,0.8092
+Bus,0.34
+Screwdriver,0.0415
+Laptop,0.33
+Drill,0.5
+Dress,0.47
+Bear,0.41
+Waffle,0.5
+Pancake,0.46
+Pretzel,0.76
+Person,0.48
+Bow and arrow,0.26
+Swimwear,0.79
+Beehive,0.1
+Bee,0.79
+Bat,0.4864
+Starfish,0.61
+Popcorn,0.25
+Burrito,0.0994
+Chainsaw,0.09
+Balloon,0.71
+Wrench,0.5
+Tent,0.37
+Vehicle registration plate,0.74
+Lantern,0.8978
+Toaster,0.5
+Flashlight,0.0676
+Billboard,0.72
+Limousine,0.1
+Necklace,0.53
+Scissors,0.5
+Stairs,0.65
+Computer keyboard,0.64
+Printer,0.83
+Traffic sign,0.67
+Chair,0.92
+Shirt,0.55
+Poster,0.73
+Cheese,0.87
+Sock,0.64
+Fire hydrant,0.09
+Earrings,0.8
+Tie,0.69
+Cabinetry,0.25
+Muffin,0.86
+Snowmobile,0.38
+Clock,0.47
+Cattle,0.79
+Cello,0.17
+Jet ski,0.15
+Camel,0.28
+Coat,0.35
+Suit,0.41
+Cat,0.12
+Juice,0.09
+Beetle,0.17
+Cannon,0.39
+Computer mouse,0.47
+Cookie,0.83
+Office building,0.48
+Fountain,0.5
+Coin,0.81
+Calculator,0.38
+Computer monitor,0.47
+Box,0.54
+Stapler,0.5
+Drum,0.9926
+Wine rack,0.23
+Ladle,0.5
+Dice,0.6
+Oven,0.3
+Dinosaur,0.59
+Couch,0.08
+Whiteboard,0.12
+Pencil sharpener,0.5
+Door,0.71
+Hat,0.46
+Shower,0.5
+Eraser,0.5
+Guacamole,0.18
+Scarf,0.61
+Dolphin,0.36
+Tin can,0.85
+Mug,0.32
+Tap,0.41
+Harbor seal,0.16
+Stretcher,0.4
+Can opener,0.5
+Roller skates,0.36
+Cutting board,0.0779
+Vase,0.74
+Slow cooker,0.5
+Coffee,0.16
+Whisk,0.5
+Flying disc,0.5
+Skirt,0.71
+Gas stove,0.6264
+Salt and pepper shakers,0.68
+Mechanical fan,0.15
+Face powder,0.5
+French fries,0.87
+Barrel,0.6
+Kite,0.8893
+Treadmill,0.23
+Fox,0.25
+Flag,0.69
+Horn,0.18
+Window blind,0.4
+Golf cart,0.25
+Jacket,0.55
+Egg,0.27
+Street light,0.75
+Guitar,0.51
+Pillow,0.9043
+Isopod,0.52
+Grape,0.65
+Power plugs and sockets,0.49
+Panda,0.21
+Giraffe,0.11
+Door handle,0.6353
+Rhinoceros,0.74
+Bathtub,0.11
+Houseplant,0.65
+Goat,0.48
+Baseball bat,0.1047
+Marine invertebrates,0.92
+Light switch,0.08
+Horse,0.66
+Stationary bicycle,0.1582
+Hammer,0.5
+Adhesive tape,0.1075
+Harp,0.24
+Sandal,0.33
+Harmonica,0.5
+Curtain,0.78
+Bed,0.18
+Kettle,0.07
+Fireplace,0.05
+Scale,0.0668
+Drinking straw,0.51
+Hair dryer,0.5
+Food processor,0.14
+Bookcase,0.33
+Refrigerator,0.24
+Punching bag,0.5
+Common fig,0.52
+Artichoke,0.85
+Table,0.56
+Kangaroo,0.48
+Koala,0.3
+Knife,0.12
+Bottle,0.5
+Dumbbell,0.5
+Bowl,0.47
+Porch,0.4671
+Lizard,0.26
+Billiard table,0.39
+Mouse,0.16
+Motorcycle,0.5
+Swim cap,0.54
+Frying pan,0.17
+Snowplow,0.53
+Waffle iron,0.5
+Milk,0.09
+Ring binder,0.5
+Plate,0.25
+Mobile phone,0.54
+Mushroom,0.59
+Crutch,0.5
+Pitcher,0.24
+Mirror,0.6049
+Lifejacket,0.85
+Table tennis racket,0.7661
+Pencil case,0.0299
+Scoreboard,0.31
+Nail,0.5
+Plastic bag,0.26
+Oboe,0.27
+Chest of drawers,0.09
+Ostrich,0.22
+Piano,0.14
+Plant,0.9864
+Potato,0.87
+Hair spray,0.5
+Pasta,0.19
+Penguin,0.89
+Pumpkin,0.59
+Pear,0.96
+Infant bed,0.29
+Pizza,0.42
+Digital clock,0.54
+Pig,0.3
+Rifle,0.23
+Lipstick,0.89
+Skateboard,0.49
+Red panda,0.23
+Rabbit,0.16
+Sculpture,0.41
+Snowboard,0.76
+Picture frame,0.92
+Sushi,0.89
+Ski,0.2283
+Squirrel,0.36
+Tripod,0.82
+Stethoscope,0.5
+Scorpion,0.27
+Segway,0.28
+Training bench,0.011
+Snake,0.15
+Sheep,0.96
+Tank,0.22
+Taco,0.23
+Tiger,0.25
+Strawberry,0.9
+Tree,0.87
+Tomato,0.73
+Train,0.21
+Picnic basket,0.23
+Trousers,0.62
+Truck,0.45
+Coffeemaker,0.86
+Violin,0.38
+Wheel,0.4
+Worm,0.36
+Whale,0.47
+Zebra,0.16
+Pizza cutter,0.5
+Cream,0.49
+Monkey,0.1
+Lion,0.18
+Bread,0.3
+Chicken,0.28
+Helicopter,0.12
+Duck,0.48
+Turtle,0.07
+Hippopotamus,0.96
+Crocodile,0.29
+Toilet,0.33
+Toilet paper,0.2732
+Squid,0.0596
+Footwear,0.87
+Lemon,0.4
+Spider,0.22
+Deer,0.37
+Frog,0.1
+Banana,0.74
+Rocket,0.28
+Wine glass,0.52
+Countertop,0.42
+Tablet computer,0.7
+Waste container,0.85
+Swimming pool,0.23
+Dog,0.07
+Book,0.84
+Elephant,0.48
+Candle,0.95
+Leopard,0.03
+Axe,0.5
+Soap dispenser,0.5
+Flower,0.87
+Hamburger,0.11
+Building,0.54
+Fish,0.79
+Lobster,0.55
+Asparagus,0.19
+Hedgehog,0.05
+Airplane,0.27
+Spoon,0.9206
+Otter,0.44
+Bull,0.38
+Horizontal bar,0.5
+Convenience store,0.54
+Bench,0.5
+Ice cream,0.3321
+Butterfly,0.27
+Parachute,0.15
+Orange,0.81
+Antelope,0.37
+Beaker,0.5
+Moths and butterflies,0.23
+Window,0.9757
+Closet,0.046
+Jellyfish,0.91
+Peach,0.42
+Coconut,0.0152
+Seat belt,0.5
+Raccoon,0.17
+Fork,0.8157
+Lamp,0.43
+Camera,0.35
+Racket,0.23
+Face,0.71
+Diaper,0.5
+Unicycle,0.5
+Chime,0.5
+Snail,0.18
+Shellfish,0.62
+Cabbage,0.51
+Carrot,0.95
+Mango,0.0352
+Jeans,0.74
+Flowerpot,0.89
+Pineapple,0.82
+Drawer,0.7237
+Stool,0.3294
+Envelope,0.09
+Cake,0.27
+Dragonfly,0.1
+Ladybug,0.17
+Shelf,0.54
+Watch,0.73
+Candy,0.58
+Salad,0.13
+Handgun,0.45
+Van,0.36
+Spice rack,0.299
+Light bulb,0.887
+Corded phone,0.34
+Sports uniform,0.52
+Dog bed,0.026
+Cat furniture,0.5
+Ruler,0.23
+Luggage and bags,0.52
+Microphone,0.72
+Broccoli,0.9781
+Umbrella,0.53
+Band-aid,0.5
+Bell pepper,0.5
+Turkey,0.28
+Pomegranate,0.38
+Doughnut,0.86
+Glasses,0.82
+Pen,0.43
+Ant,0.57
+Car,0.37
+Skunk,0.67
+Teddy bear,0.32
+Watermelon,0.58
+Cantaloupe,0.09
+Dishwasher,0.5
+Flute,0.34
+Balance beam,0.68
+Sandwich,0.56
+Shrimp,0.74
+Sewing machine,0.22
+Binoculars,0.06
+Ipod,0.18
+Accordion,0.17
+Crab,0.22
+Crown,0.5
+Alpaca,0.37
+Remote control,0.68
+Wheelchair,0.29
+Armadillo,0.5
+Maracas,0.5
+Helmet,0.78

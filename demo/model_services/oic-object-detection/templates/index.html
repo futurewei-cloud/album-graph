@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Demo">
+    <meta name="author" content="Lin Chen @ Huawei">
+
+    <title>Demo</title>
+
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+
+    <script type="text/javascript" src="//code.jquery.com/jquery-2.1.1.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+    <!-- Script to instantly classify an image once it is uploaded. -->
+    <script type="text/javascript">
+      $(document).ready(
+        function(){
+          $('#classifyfile').attr('disabled',true);
+          $('#imagefile').change(
+            function(){
+              if ($(this).val()){
+                $('#formupload').submit();
+              }
+            }
+          );
+        }
+      );
+    </script>
+
+    <style>
+    body {
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      line-height:1.5em;
+      color: #232323;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1, h2, h3 {
+      font-family: Times, serif;
+      line-height:1.5em;
+      border-bottom: 1px solid #ccc;
+    }
+    </style>
+  </head>
+
+  <body>
+    <!-- Begin page content -->
+    <div class="container">
+      <div class="page-header">
+        <h1><a href="/">Demos</a></h1>
+      </div>
+
+      <div>
+        <h2>Detection</h2>
+        <a href="/classify_url?imageurl=http://www.wmvo.com/wp-content/uploads/2018/03/pothole_key-660x330.jpg">Click for a Quick Example</a>
+      </div>
+
+      <div class="media">
+        <a class="pull-left" href="#"><img class="media-object" width="400" src={{ imagesrc }}></a>
+        <div class="media-body">
+          <div class="bs-example bs-example-tabs">
+              <pre>
+              {{result}}
+              </pre>
+          </div>
+        </div>
+      </div>
+
+      <form role="form" action="classify_url" method="get">
+        <div class="form-group">
+          <div class="input-group">
+            <input type="text" class="form-control" name="imageurl" id="imageurl" placeholder="Provide an image URL">
+            <span class="input-group-btn">
+              <input class="btn btn-primary" value="Classify URL" type="submit" id="classifyurl"></input>
+            </span>
+          </div><!-- /input-group -->
+        </div>
+      </form>
+
+      <form id="formupload" class="form-inline" role="form" action="classify_upload" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+          <label for="imagefile">Or upload an image:</label>
+          <input type="file" name="imagefile" id="imagefile">
+        </div>
+        <!--<input type="submit" class="btn btn-primary" value="Classify File" id="classifyfile"></input>-->
+      </form>
+    </div>
+
+    <hr>
+    <div id="footer">
+      <div class="container">
+        <p>&copy; Huawei Cloud - EI Seattle</p>
+      </div>
+   </div>
+ </body>
+</html>

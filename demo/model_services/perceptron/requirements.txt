@@ -1,0 +1,7 @@
+werkzeug
+flask
+tornado
+requests
+numpy
+Pillow
+opencv-python

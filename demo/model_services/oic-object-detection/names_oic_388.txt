@@ -1,0 +1,388 @@
+Background
+Ladder
+Toothbrush
+Syringe
+Sink
+Apple
+Paddle
+Snowman
+Chopsticks
+Bird
+Parking meter
+Traffic light
+Croissant
+Cucumber
+Radish
+Towel
+Doll
+Skull
+Washing machine
+Glove
+Tick
+Belt
+Sunglasses
+Banjo
+Cart
+Ball
+Bicycle
+Boat
+Surfboard
+Boot
+Headphones
+Hot dog
+Shorts
+Bus
+Screwdriver
+Laptop
+Drill
+Dress
+Bear
+Waffle
+Pancake
+Pretzel
+Person
+Bow and arrow
+Swimwear
+Beehive
+Bee
+Bat
+Starfish
+Popcorn
+Burrito
+Chainsaw
+Balloon
+Wrench
+Tent
+Vehicle registration plate
+Lantern
+Toaster
+Flashlight
+Billboard
+Limousine
+Necklace
+Scissors
+Stairs
+Computer keyboard
+Printer
+Traffic sign
+Chair
+Shirt
+Poster
+Cheese
+Sock
+Fire hydrant
+Earrings
+Tie
+Cabinetry
+Muffin
+Snowmobile
+Clock
+Cattle
+Cello
+Jet ski
+Camel
+Coat
+Suit
+Cat
+Juice
+Beetle
+Cannon
+Computer mouse
+Cookie
+Office building
+Fountain
+Coin
+Calculator
+Computer monitor
+Box
+Stapler
+Drum
+Wine rack
+Ladle
+Dice
+Oven
+Dinosaur
+Couch
+Whiteboard
+Pencil sharpener
+Door
+Hat
+Shower
+Eraser
+Guacamole
+Scarf
+Dolphin
+Tin can
+Mug
+Tap
+Harbor seal
+Stretcher
+Can opener
+Roller skates
+Cutting board
+Vase
+Slow cooker
+Coffee
+Whisk
+Flying disc
+Skirt
+Gas stove
+Salt and pepper shakers
+Mechanical fan
+Face powder
+French fries
+Barrel
+Kite
+Treadmill
+Fox
+Flag
+Horn
+Window blind
+Golf cart
+Jacket
+Egg
+Street light
+Guitar
+Pillow
+Isopod
+Grape
+Power plugs and sockets
+Panda
+Giraffe
+Door handle
+Rhinoceros
+Bathtub
+Houseplant
+Goat
+Baseball bat
+Marine invertebrates
+Light switch
+Horse
+Stationary bicycle
+Hammer
+Adhesive tape
+Harp
+Sandal
+Harmonica
+Curtain
+Bed
+Kettle
+Fireplace
+Scale
+Drinking straw
+Hair dryer
+Food processor
+Bookcase
+Refrigerator
+Punching bag
+Common fig
+Artichoke
+Table
+Kangaroo
+Koala
+Knife
+Bottle
+Dumbbell
+Bowl
+Porch
+Lizard
+Billiard table
+Mouse
+Motorcycle
+Swim cap
+Frying pan
+Snowplow
+Waffle iron
+Milk
+Ring binder
+Plate
+Mobile phone
+Mushroom
+Crutch
+Pitcher
+Mirror
+Lifejacket
+Table tennis racket
+Pencil case
+Scoreboard
+Nail
+Plastic bag
+Oboe
+Chest of drawers
+Ostrich
+Piano
+Plant
+Potato
+Hair spray
+Pasta
+Penguin
+Pumpkin
+Pear
+Infant bed
+Pizza
+Digital clock
+Pig
+Rifle
+Lipstick
+Skateboard
+Red panda
+Rabbit
+Sculpture
+Snowboard
+Picture frame
+Sushi
+Ski
+Squirrel
+Tripod
+Stethoscope
+Scorpion
+Segway
+Training bench
+Snake
+Sheep
+Tank
+Taco
+Tiger
+Strawberry
+Tree
+Tomato
+Train
+Picnic basket
+Trousers
+Truck
+Coffeemaker
+Violin
+Wheel
+Worm
+Whale
+Zebra
+Pizza cutter
+Cream
+Monkey
+Lion
+Bread
+Chicken
+Helicopter
+Duck
+Turtle
+Hippopotamus
+Crocodile
+Toilet
+Toilet paper
+Squid
+Footwear
+Lemon
+Spider
+Deer
+Frog
+Banana
+Rocket
+Wine glass
+Countertop
+Tablet computer
+Waste container
+Swimming pool
+Dog
+Book
+Elephant
+Candle
+Leopard
+Axe
+Soap dispenser
+Flower
+Hamburger
+Building
+Fish
+Lobster
+Asparagus
+Hedgehog
+Airplane
+Spoon
+Otter
+Bull
+Horizontal bar
+Convenience store
+Bench
+Ice cream
+Butterfly
+Parachute
+Orange
+Antelope
+Beaker
+Moths and butterflies
+Window
+Closet
+Jellyfish
+Peach
+Coconut
+Seat belt
+Raccoon
+Fork
+Lamp
+Camera
+Racket
+Face
+Diaper
+Unicycle
+Chime
+Snail
+Shellfish
+Cabbage
+Carrot
+Mango
+Jeans
+Flowerpot
+Pineapple
+Drawer
+Stool
+Envelope
+Cake
+Dragonfly
+Ladybug
+Shelf
+Watch
+Candy
+Salad
+Handgun
+Van
+Spice rack
+Light bulb
+Corded phone
+Sports uniform
+Dog bed
+Cat furniture
+Ruler
+Luggage and bags
+Microphone
+Broccoli
+Umbrella
+Band-aid
+Bell pepper
+Turkey
+Pomegranate
+Doughnut
+Glasses
+Pen
+Ant
+Car
+Skunk
+Teddy bear
+Watermelon
+Cantaloupe
+Dishwasher
+Flute
+Balance beam
+Sandwich
+Shrimp
+Sewing machine
+Binoculars
+Ipod
+Accordion
+Crab
+Crown
+Alpaca
+Remote control
+Wheelchair
+Armadillo
+Maracas
+Helmet
