@@ -1,5 +1,5 @@
 import { forOwn } from 'object-agent';
-import { method } from 'type-enforcer';
+import { method } from 'type-enforcer-ui';
 import './ForceGraph.less';
 import GraphDB from './GraphDB';
 import Layout from './Layout';

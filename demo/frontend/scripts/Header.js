@@ -12,7 +12,7 @@ export default class {
 			content: [
 				{
 					control: Header,
-					ID: 'isWorkingId',
+					id: 'isWorkingId',
 					isWorkingLabel: 'Loading',
 					content: [
 						{
@@ -49,7 +49,7 @@ export default class {
 									}
 								}, {
 									control: SearchBar,
-									ID: 'searchBar',
+									id: 'searchBar',
 									breakOnSpaces: false,
 									isCompact: true,
 									localizedStrings: {

@@ -1,5 +1,5 @@
 import { Container, Drawer, Heading, HEADING_LEVELS, Image, IS_PHONE } from 'hafgufa';
-import { castArray, method } from 'type-enforcer';
+import { castArray, method } from 'type-enforcer-ui';
 import { DATE_ICON, LOCATION_ICON, PERSON_ICON, TAG_ICON } from './icons';
 import './SelectionPanel.less';
 
@@ -37,7 +37,7 @@ export default class SelectionPanel {
 
 		settings.container.append({
 			control: Drawer,
-			ID: 'drawerId',
+			id: 'drawerId',
 			dock: 'right',
 			width: '16rem',
 			closedSize: '2rem',
@@ -56,7 +56,7 @@ export default class SelectionPanel {
 			content: [
 				{
 					control: Heading,
-					ID: 'selectionHeadingOpen',
+					id: 'selectionHeadingOpen',
 					level: HEADING_LEVELS.THREE,
 					icon: '',
 					title: 'Info',
@@ -82,11 +82,11 @@ export default class SelectionPanel {
 					]
 				}, {
 					control: Container,
-					ID: 'contentContainerId',
+					id: 'contentContainerId',
 					padding: '0 16px 16px'
 				}, {
 					control: Heading,
-					ID: 'selectionHeadingClosed',
+					id: 'selectionHeadingClosed',
 					level: HEADING_LEVELS.THREE,
 					icon: '',
 					title: 'Info',

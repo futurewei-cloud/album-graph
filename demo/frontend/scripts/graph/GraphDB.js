@@ -143,8 +143,8 @@ const filter = debounce(function() {
 					const nodeIndexEntry = self[FULL_LINK_INDEX]
 						.find({id: node.id});
 					if (nodeIndexEntry) {
-						nodeIndexEntry.all.forEach((ID) => {
-							checkNode(getNode.call(this, ID), level + 1);
+						nodeIndexEntry.all.forEach((id) => {
+							checkNode(getNode.call(this, id), level + 1);
 						});
 					}
 
@@ -370,8 +370,8 @@ export default class GraphDB {
 		return self[FILTERED_DATA];
 	}
 
-	node(ID) {
-		return getNode.call(this, ID);
+	node(id) {
+		return getNode.call(this, id);
 	}
 
 	eachNode(callback) {
@@ -413,7 +413,7 @@ export default class GraphDB {
 
 	linkedNodes(node) {
 		const link = getLink.call(this, node.id);
-		return !link ? [] : link.all.map((ID) => getNode.call(this, ID));
+		return !link ? [] : link.all.map((id) => getNode.call(this, id));
 	}
 
 	shortestPaths(source, target) {

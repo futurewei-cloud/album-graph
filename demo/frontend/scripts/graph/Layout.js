@@ -1,5 +1,5 @@
 import { event, select, zoom, zoomIdentity } from 'd3';
-import { isNumber, isObject, method, Thickness } from 'type-enforcer';
+import { isNumber, isObject, method, Thickness } from 'type-enforcer-ui';
 
 const translate = function(x, y) {
 	this[D3_ZOOM].translateBy(this[SVG], x * (1 / this[CURRENT_ZOOM].k), y * (1 / this[CURRENT_ZOOM].k));

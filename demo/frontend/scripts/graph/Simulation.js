@@ -1,5 +1,5 @@
 import { forceLink, forceManyBody, forceSimulation, forceX, forceY } from 'd3';
-import { method } from 'type-enforcer';
+import { method } from 'type-enforcer-ui';
 
 const SIMULATION = Symbol();
 const CHARGE = 'charge';
