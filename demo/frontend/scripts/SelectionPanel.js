@@ -1,6 +1,6 @@
 import { Container, Drawer, Heading, HEADING_LEVELS, Image, IS_PHONE } from 'hafgufa';
 import { castArray, method } from 'type-enforcer-ui';
-import { DATE_ICON, LOCATION_ICON, PERSON_ICON, TAG_ICON } from './icons';
+import { DATE_ICON, LOCATION_ICON, PERSON_ICON, SEMANTIC_ICON, TAG_ICON } from './icons';
 import './SelectionPanel.less';
 
 const SELECTION_HEADING_OPEN = Symbol();
@@ -41,7 +41,6 @@ export default class SelectionPanel {
 			dock: 'right',
 			width: '16rem',
 			closedSize: '2rem',
-			isOpen: !IS_PHONE,
 			isAnimated: true,
 			onOpen() {
 				self[SELECTION_HEADING_OPEN].isVisible(true);
@@ -53,57 +52,46 @@ export default class SelectionPanel {
 				self[CONTENT].isVisible(false);
 				self[SELECTION_HEADING_CLOSED].isVisible(true);
 			},
-			content: [
-				{
-					control: Heading,
-					id: 'selectionHeadingOpen',
-					level: HEADING_LEVELS.THREE,
-					icon: '',
-					title: 'Info',
-					margin: '12px',
-					buttons: [
-						{
-							icon: '',
-							onClick() {
-								const newSetting = self[FORCE_GRAPH].highlightNodeType() === 'selected' ? '' : 'selected';
-								self[FORCE_GRAPH].highlightNodeType(newSetting);
-							}
-						}, {
-							icon: '',
-							onClick() {
-								return self[FORCE_GRAPH].zoom('selected');
-							}
-						}, {
-							icon: '',
-							onClick() {
-								settings.container.get('drawerId').isOpen(false);
-							}
-						}
-					]
-				}, {
-					control: Container,
-					id: 'contentContainerId',
-					padding: '0 16px 16px'
-				}, {
-					control: Heading,
-					id: 'selectionHeadingClosed',
-					level: HEADING_LEVELS.THREE,
-					icon: '',
-					title: 'Info',
-					classes: 'closed-heading',
-					isVisible: false,
-					onSelect() {
-						settings.container.get('drawerId').isOpen(true);
-					},
-					isSelectable: true
-				}
-			]
+			content: [{
+				control: Heading,
+				id: 'selectionHeadingOpen',
+				isVisible: !IS_PHONE,
+				level: HEADING_LEVELS.THREE,
+				icon: '',
+				title: 'Info',
+				margin: '12px',
+				buttons: [{
+					icon: '',
+					onClick() {
+						settings.container.get('drawerId').isOpen(false);
+					}
+				}]
+			}, {
+				control: Container,
+				id: 'contentContainerId',
+				isVisible: !IS_PHONE,
+				padding: '0 16px 16px'
+			}, {
+				control: Heading,
+				id: 'selectionHeadingClosed',
+				isVisible: IS_PHONE,
+				level: HEADING_LEVELS.THREE,
+				icon: '',
+				title: 'Info',
+				classes: 'closed-heading',
+				onSelect() {
+					settings.container.get('drawerId').isOpen(true);
+				},
+				isSelectable: true
+			}]
 		});
 
 		this[SELECTION_HEADING_OPEN] = settings.container.get('selectionHeadingOpen');
 		this[SELECTION_HEADING_CLOSED] = settings.container.get('selectionHeadingClosed');
 		this[DRAWER] = settings.container.get('drawerId');
 		this[CONTENT] = settings.container.get('contentContainerId');
+
+		this[DRAWER].isOpen(!IS_PHONE);
 
 		this.onUnSelect(settings.onUnSelect);
 	}
@@ -164,6 +152,7 @@ Object.assign(SelectionPanel.prototype, {
 
 				if (node.type === 'image') {
 					addMeta(node.meta, 'tag', TAG_ICON);
+					addMeta(node.meta, 'semantic', SEMANTIC_ICON);
 					addMeta(node.meta, 'location', LOCATION_ICON);
 					addMeta(node.meta, 'person', PERSON_ICON);
 					addMeta(node.meta, 'time', DATE_ICON);

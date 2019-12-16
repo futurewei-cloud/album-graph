@@ -1,6 +1,4 @@
-@import (css) url('https://fonts.googleapis.com/css?family=Titillium+Web:200,400,600');
-@import (css) url('https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css');
-@import '../node_modules/hafgufa/src/ui/Main.less';
+@import '~hafgufa/src/Main.less';
 
 .control-layer {
 	position: absolute;
@@ -11,6 +9,11 @@
 	pointer-events: none;
 	box-shadow: inset 0 3rem 10rem black, inset 0 0 2rem black;
 	transform: translateZ(0);
+	overflow: hidden;
+
+	* {
+		pointer-events: unset;
+	}
 }
 
 @locationColor: #be0;
@@ -60,7 +63,7 @@
 		}
 
 		.node-icon {
-			font-size: 4em;
+			font-size: 3.5em;
 		}
 	}
 
@@ -74,6 +77,44 @@
 
 		.node-icon {
 			font-size: 6.2em;
+		}
+	}
+}
+
+.drawer, .menu {
+	.tag {
+		.icon {
+			color: darken(@highlightColor, 20%);
+		}
+	}
+
+	.semantic {
+		.icon {
+			color: darken(@relationshipColor, 20%);
+		}
+	}
+
+	.location {
+		.icon {
+			color: darken(@locationColor, 20%);
+		}
+	}
+
+	.time {
+		.icon {
+			color: darken(@timeColor, 20%);
+		}
+	}
+
+	.person {
+		.icon {
+			color: darken(@facesColor, 20%);
+		}
+	}
+
+	.section {
+		> .heading {
+			background: transparent !important;
 		}
 	}
 }

@@ -2,7 +2,7 @@
 
 .drawer {
 	box-shadow: 0 0 1rem @largeShadowColor;
-	background: fade(black, 70%);
+	background: fade(black, 85%);
 	pointer-events: all;
 
 	.closed-heading {
@@ -22,27 +22,7 @@
 		}
 	}
 
-	.tag {
-		.icon {
-			color: darken(@highlightColor, 20%);
-		}
-	}
-
-	.location {
-		.icon {
-			color: darken(@locationColor, 20%);
-		}
-	}
-
-	.time {
-		.icon {
-			color: darken(@timeColor, 20%);
-		}
-	}
-
-	.person {
-		.icon {
-			color: darken(@facesColor, 20%);
-		}
+	.section > .heading {
+		box-shadow: none;
 	}
 }

@@ -1,11 +1,12 @@
 import { debounce, defer } from 'async-agent';
 import { json } from 'd3';
+import { IS_PHONE } from 'hafgufa';
 import { List } from 'hord';
 import { clone, forOwn, isEmpty } from 'object-agent';
 import { castArray, enforceDate, isDate, isNumber, isString, method } from 'type-enforcer-ui';
-import { DATE_ICON, LOCATION_ICON, PERSON_ICON, TAG_ICON } from './icons';
+import { DATE_ICON, LOCATION_ICON, PERSON_ICON, SEMANTIC_ICON, TAG_ICON } from './icons';
 
-const TARGET_IMAGES = 50;
+const TARGET_IMAGES = IS_PHONE ? 50 : 100;
 const DATE_SEPARATOR = '/';
 const DATASET = 's';
 
@@ -33,6 +34,7 @@ const PEOPLE = Symbol();
 
 const reset = Symbol();
 const saveImage = Symbol();
+const saveMeta = Symbol();
 const saveImages = Symbol();
 const loadImages = Symbol();
 const loadTagImages = Symbol();
@@ -85,6 +87,15 @@ export default class Load {
 					self[ALL_TAGS_LOWERCASE] = tags.map((tag) => tag.toLocaleLowerCase());
 
 					addSuggestions(self[ALL_TAGS], TAG_ICON, 'tag');
+				});
+		};
+
+		const loadRelationships = () => {
+			Load.loadJson('allrelationships', 'arg=NA')
+				.then((data) => {
+					data.forEach((words) => {
+						addSuggestions(words.join(' '), SEMANTIC_ICON, 'semantic');
+					});
 				});
 		};
 
@@ -181,16 +192,21 @@ export default class Load {
 	}
 
 	static buildImageUrl(src, size = 'm') {
-		return `${config.apiUrl}${size}images?prefix=${src.replace('Lin/', 'Lin/&filename=')}&cachebust=3`;
+		return `${config.apiUrl}${size}images?prefix=${src.replace(/(\/)(?!.*\1)/, '/&filename=')}&cachebust=3`;
 	}
 
 	[reset]() {
 		this[NODE_IDS].length = 0;
 
+		this[LOADING_TAGS] = 1;
+		this[LOADED_TAGS] = 0;
+
 		this.data = {
 			nodes: [],
 			edges: []
 		};
+
+		return this;
 	}
 
 	[saveImage](image, imageId, isSelected, meta = {}) {
@@ -227,21 +243,18 @@ export default class Load {
 		const self = this;
 		let count = 0;
 
-		self.data.nodes.push(Object.assign({
+		self.data.nodes.push({
 			id: tag,
 			type: type,
 			label: tag,
 			icon: icon,
 			classes: type,
-			weight: 1
-		}, extraProperties));
+			weight: 1,
+			...extraProperties
+		});
 
 		if (sourceId) {
-			const sourceNode = self.data.nodes.find((node) => node.id === sourceId);
-			if (!sourceNode.meta[type]) {
-				sourceNode.meta[type] = [];
-			}
-			sourceNode.meta[type].push(tag);
+			self[saveMeta](sourceId, type, tag);
 
 			self.data.edges.push({
 				source: sourceId,
@@ -276,18 +289,39 @@ export default class Load {
 		}
 	}
 
+	[saveMeta](sourceId, type, tag) {
+		const sourceNode = this.data.nodes.find((node) => node.id === sourceId);
+		if (!sourceNode.meta[type]) {
+			sourceNode.meta[type] = [];
+		}
+		if (!sourceNode.meta[type].includes(tag)) {
+			sourceNode.meta[type].push(tag);
+		}
+	}
+
 	[loadImages](settings) {
 		const self = this;
 
 		const done = () => {
-			self[saveImages](settings.sourceId, settings.name, settings.type, self[CACHE][settings.name], settings.imagesPerTag, Object.assign({}, settings.extraProps, getExtraProps(settings.isPrimary)), settings.icon);
+			self[saveImages](
+				settings.sourceId,
+				settings.name,
+				settings.type,
+				self[CACHE][settings.name],
+				settings.imagesPerTag,
+				{
+					...settings.extraProps,
+					...getExtraProps(settings.isPrimary)
+				},
+				settings.icon
+			);
 		};
 
 		if (self[CACHE][settings.name]) {
 			done();
 		}
 		else {
-			settings.loadFunction(settings.name, settings.loadArg)
+			settings.loadFunction(settings.loadQuery || settings.name, settings.loadArg)
 				.then((images) => {
 					self[CACHE][settings.name] = images;
 					done();
@@ -316,19 +350,23 @@ export default class Load {
 				loadFunction: Load.getSemanticImages,
 				sourceId: sourceId,
 				name: displayWords,
-				type: 'tag',
+				loadQuery: words,
+				type: 'semantic',
 				imagesPerTag: imagesPerTag,
+				icon: SEMANTIC_ICON,
 				isPrimary: isPrimary
 			});
 		}
 		else {
 			self.data.nodes.push({
 				id: displayWords,
-				type: 'relationship',
+				type: 'semantic',
 				label: words[1],
 				classes: 'semantic',
+				icon: SEMANTIC_ICON,
 				weight: 0.1
 			});
+			self[saveMeta](sourceId, 'semantic', displayWords);
 
 			self.data.edges.push({
 				source: sourceId,
@@ -413,14 +451,14 @@ export default class Load {
 			self[saveImages](sourceId, tag, 'person', self[CACHE][clusterId], imagesPerTag, getExtraProps(isPrimary), PERSON_ICON);
 		};
 
-		if (self[CACHE][clusterId]) {
+		if (self[CACHE][tag]) {
 			done();
 		}
 		else {
 			Load.getPersonImages(clusterId)
 				.then((images) => {
 					if (!isEmpty(images)) {
-						self[CACHE][clusterId] = images;
+						self[CACHE][tag] = images;
 						done();
 					}
 				});
@@ -459,7 +497,6 @@ export default class Load {
 			});
 
 			self[LOADING_TAGS] = data.tag.length + people.length;
-			self[LOADED_TAGS] = 0;
 
 			imagesPerTag = clamp(Math.ceil(TARGET_IMAGES / (self[LOADING_TAGS] + 3)), 1, TARGET_IMAGES);
 
@@ -500,63 +537,37 @@ export default class Load {
 	}
 
 	loadTag(tag) {
-		const self = this;
-
-		self[reset]();
-		self[LOADING_TAGS] = 1;
-		self[LOADED_TAGS] = 0;
-
-		self[loadTagImages](null, tag, TARGET_IMAGES, true);
+		this[reset]()[loadTagImages](null, tag, TARGET_IMAGES, true);
 	}
 
 	loadSemantic(words) {
-		const self = this;
-
-		self[reset]();
-		self[LOADING_TAGS] = 1;
-		self[LOADED_TAGS] = 0;
-
-		self[loadSemanticImages](null, words, TARGET_IMAGES, true);
+		this[reset]()[loadSemanticImages](null, words, TARGET_IMAGES, true);
 	}
 
 	loadLocation(location, locationType) {
-		const self = this;
-
-		self[reset]();
-		self[LOADING_TAGS] = 1;
-		self[LOADED_TAGS] = 0;
-
-		self[loadLocationImages](null, location, locationType, TARGET_IMAGES, true);
+		this[reset]()[loadLocationImages](null, location, locationType, TARGET_IMAGES, true);
 	}
 
 	loadDate(date) {
-		const self = this;
-
-		self[reset]();
-		self[LOADING_TAGS] = 1;
-		self[LOADED_TAGS] = 0;
-
-		self[loadDateImages](null, date.split(DATE_SEPARATOR), TARGET_IMAGES, true);
+		this[reset]()[loadDateImages](null, date.split(DATE_SEPARATOR), TARGET_IMAGES, true);
 	}
 
 	loadPerson(clusterId) {
-		const self = this;
-
-		self[reset]();
-		self[LOADING_TAGS] = 1;
-		self[LOADED_TAGS] = 0;
-
-		self[loadPersonImages](null, clusterId, TARGET_IMAGES, true);
+		this[reset]()[loadPersonImages](null, clusterId, TARGET_IMAGES, true);
 	}
 
 	query(query, ...args) {
+		const self = this;
+		query = query.split('~');
+		const type = args[0] || query[1];
+		query = query[0].replace('_', ' ');
 		const queryLower = query.toLocaleLowerCase();
 		self.onQuery()();
 
 		if (isNumber(query, true)) {
 			self.loadImage(query);
 		}
-		else if (queryLower.indexOf('person ') === 0) {
+		else if (queryLower.indexOf('person ') === 0 && isNumber(queryLower.replace('person ', ''), true)) {
 			self.loadPerson(queryLower.replace('person ', ''));
 		}
 		else if (self[ALL_TAGS_LOWERCASE].includes(queryLower)) {
