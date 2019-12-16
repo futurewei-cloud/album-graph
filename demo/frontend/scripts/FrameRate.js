@@ -83,7 +83,7 @@ export default class FrameRate {
 		self[FPS] = new FrameRateHistory({
 			sampleRate: SAMPLE_RATE,
 			historyDuration: DURATION,
-			onSample: (history) => {
+			onSample(history) {
 				updateSparkLine.call(self, history);
 			}
 		});

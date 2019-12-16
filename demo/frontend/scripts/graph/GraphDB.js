@@ -313,8 +313,10 @@ export default class GraphDB {
 					data: self[PROCESSED_DATA].nodes,
 					normalizeWeights: self.normalizeWeights(),
 					processCallback: self.onProcessNode(),
-					getItem: (node) => prevNodeIndex.find((d) => d.id === node.id),
-					eachBefore: (node) => {
+					getItem(node) {
+						return prevNodeIndex.find((d) => d.id === node.id);
+					},
+					eachBefore(node) {
 						setNode.call(self, node, true);
 
 						if (node.type) {
@@ -333,7 +335,7 @@ export default class GraphDB {
 						data: self[PROCESSED_DATA].edges,
 						normalizeWeights: self.normalizeWeights(),
 						processCallback: self.onProcessLink(),
-						eachBefore: (link) => {
+						eachBefore(link) {
 							let output;
 
 							link.source = getNode.call(self, link.source, true);
@@ -351,7 +353,7 @@ export default class GraphDB {
 
 							return output;
 						},
-						between: () => {
+						between() {
 							if (!self.isDirected()) {
 								self[PROCESSED_DATA].edges = deDuplicatedLinks;
 							}

@@ -1,5 +1,5 @@
 const d3Helper = {
-	dropShadow: (defs, id, dx = 1, dy = 1, blurRadius = 4, spread = 0, opacity = 1, color = '#000000') => {
+	dropShadow(defs, id, dx = 1, dy = 1, blurRadius = 4, spread = 0, opacity = 1, color = '#000000') {
 		const filter = defs.append('filter')
 			.attr('id', id)
 			.attr('x', '-5000%')

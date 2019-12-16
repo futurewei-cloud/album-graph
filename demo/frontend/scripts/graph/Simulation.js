@@ -85,7 +85,7 @@ Object.assign(Simulation.prototype, {
 		init: 0.1,
 		min: 0,
 		max: 1,
-		set: function(xStrength) {
+		set(xStrength) {
 			this[SIMULATION].force(X_FORCE).strength(xStrength);
 		}
 	}),
@@ -93,7 +93,7 @@ Object.assign(Simulation.prototype, {
 		init: 0.1,
 		min: 0,
 		max: 1,
-		set: function(yStrength) {
+		set(yStrength) {
 			this[SIMULATION].force(Y_FORCE).strength(yStrength);
 		}
 	})

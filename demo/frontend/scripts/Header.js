@@ -28,19 +28,25 @@ export default class {
 									classes: 'header-button',
 									icon: '',
 									label: 'Fit',
-									onClick: () => settings.forceGraph.zoom('fit')
+									onClick() {
+										return settings.forceGraph.zoom('fit');
+									}
 								}, {
 									control: Button,
 									classes: 'header-button',
 									icon: '',
 									alt: 'Random',
-									onClick: () => settings.onSearch('random')
+									onClick() {
+										return settings.onSearch('random');
+									}
 								}, {
 									control: Button,
 									classes: 'header-button',
 									icon: '',
 									alt: 'Undo',
-									onClick: () => settings.onSearch('undo')
+									onClick() {
+										return settings.onSearch('undo');
+									}
 								}, {
 									control: SearchBar,
 									ID: 'searchBar',
@@ -49,7 +55,7 @@ export default class {
 									localizedStrings: {
 										search: 'Search'
 									},
-									onChange: (value) => {
+									onChange(value) {
 										if (value[0]) {
 											settings.onSearch(value[0]);
 										}

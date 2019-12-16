@@ -280,6 +280,8 @@ Object.assign(ForceGraph.prototype, {
 	onProcessNode: method.function(),
 	onProcessLink: method.function(),
 	highlightNodeType: method.string({
-		set: (highlightNodeType) => this[NODES].setStyles(highlightNodeType)
+		set(highlightNodeType) {
+			return this[NODES].setStyles(highlightNodeType);
+		}
 	})
 });

@@ -123,7 +123,7 @@ export default class Layout {
 Object.assign(Layout.prototype, {
 	onZoom: method.function(),
 	width: method.number({
-		set: function(width) {
+		set(width) {
 			translate.call(this, (width - this[CURRENT_WIDTH]) / 2, 0);
 			this[CURRENT_WIDTH] = width;
 			this[SVG].style('width', width + 'px');
@@ -131,7 +131,7 @@ Object.assign(Layout.prototype, {
 		}
 	}),
 	height: method.number({
-		set: function(height) {
+		set(height) {
 			translate.call(this, 0, (height - this[CURRENT_HEIGHT]) / 2);
 			this[CURRENT_HEIGHT] = height;
 			this[SVG].style('height', height + 'px');

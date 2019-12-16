@@ -43,15 +43,15 @@ export default class SelectionPanel {
 			closedSize: '2rem',
 			isOpen: !IS_PHONE,
 			isAnimated: true,
-			onOpen: () => {
-				this[SELECTION_HEADING_OPEN].isVisible(true);
-				this[CONTENT].isVisible(true);
-				this[SELECTION_HEADING_CLOSED].isVisible(false);
+			onOpen() {
+				self[SELECTION_HEADING_OPEN].isVisible(true);
+				self[CONTENT].isVisible(true);
+				self[SELECTION_HEADING_CLOSED].isVisible(false);
 			},
-			onClose: () => {
-				this[SELECTION_HEADING_OPEN].isVisible(false);
-				this[CONTENT].isVisible(false);
-				this[SELECTION_HEADING_CLOSED].isVisible(true);
+			onClose() {
+				self[SELECTION_HEADING_OPEN].isVisible(false);
+				self[CONTENT].isVisible(false);
+				self[SELECTION_HEADING_CLOSED].isVisible(true);
 			},
 			content: [
 				{
@@ -64,16 +64,18 @@ export default class SelectionPanel {
 					buttons: [
 						{
 							icon: '',
-							onClick: () => {
+							onClick() {
 								const newSetting = self[FORCE_GRAPH].highlightNodeType() === 'selected' ? '' : 'selected';
 								self[FORCE_GRAPH].highlightNodeType(newSetting);
 							}
 						}, {
 							icon: '',
-							onClick: () => self[FORCE_GRAPH].zoom('selected')
+							onClick() {
+								return self[FORCE_GRAPH].zoom('selected');
+							}
 						}, {
 							icon: '',
-							onClick: () => {
+							onClick() {
 								settings.container.get('drawerId').isOpen(false);
 							}
 						}
@@ -90,7 +92,7 @@ export default class SelectionPanel {
 					title: 'Info',
 					classes: 'closed-heading',
 					isVisible: false,
-					onSelect: () => {
+					onSelect() {
 						settings.container.get('drawerId').isOpen(true);
 					},
 					isSelectable: true
@@ -109,7 +111,7 @@ export default class SelectionPanel {
 
 Object.assign(SelectionPanel.prototype, {
 	selection: method.array({
-		set: function(selection) {
+		set(selection) {
 			const self = this;
 			let content;
 
@@ -120,7 +122,7 @@ Object.assign(SelectionPanel.prototype, {
 							control: Heading,
 							classes: classes || type,
 							isSelectable: true,
-							onSelect: function() {
+							onSelect() {
 								self[FORCE_GRAPH].zoom('id', title);
 								if (IS_PHONE) {
 									self[DRAWER].isOpen(false);
@@ -134,13 +136,14 @@ Object.assign(SelectionPanel.prototype, {
 			};
 
 			const addDescription = (title, subTitle, extra = {}) => {
-				content.push(Object.assign({
+				content.push({
 					control: Heading,
 					level: HEADING_LEVELS.FIVE,
 					title: title,
 					subTitle: subTitle,
-					canWrap: true
-				}, extra));
+					canWrap: true,
+					...extra
+				});
 			};
 
 			selection.sort(sorter);
