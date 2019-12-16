@@ -45,7 +45,7 @@ export default class Load {
 				.then((tags) => {
 					self[ALL_TAGS] = tags;
 					self[ALL_TAGS_LOWERCASE] = tags.map((tag) => tag.toLocaleLowerCase());
-					console.log('tags:', self[ALL_TAGS]);
+
 					if (self.onLoadSearch()) {
 						self.onLoadSearch()(self[ALL_TAGS]);
 					}
@@ -55,8 +55,6 @@ export default class Load {
 		const loadPeople = (clusterId) => {
 			Load.getPersonImages(clusterId)
 				.then((images) => {
-					console.log('person face cluster ' + clusterId + ':', images);
-
 					if (!isEmpty(images)) {
 						self[CACHE]['Person ' + clusterId] = images;
 						loadPeople(clusterId + 1);
@@ -89,7 +87,6 @@ export default class Load {
 	}
 
 	static getImageSpecs(id) {
-		console.log('getImageSpecs for ' + id);
 		return Load.loadJson('img', `output=allimginfo&arg=${id}`);
 	}
 
@@ -364,7 +361,6 @@ export default class Load {
 		else {
 			Load.getPersonImages(clusterId)
 				.then((images) => {
-					console.log('person images:', images);
 					if (!isEmpty(images)) {
 						self[CACHE][clusterId] = images;
 						done();
@@ -387,7 +383,6 @@ export default class Load {
 
 		const loadNodes = (data) => {
 			const people = [];
-			console.log('specs:', data);
 
 			self[CACHE].specs[id] = data;
 
@@ -405,7 +400,6 @@ export default class Load {
 				}
 			});
 
-			// self[LOADING_TAGS] = data.tag.length + data.relationships.length;
 			self[LOADING_TAGS] = data.tag.length + people.length;
 			self[LOADED_TAGS] = 0;
 
@@ -490,8 +484,6 @@ export default class Load {
 	loadPerson(clusterId) {
 		const self = this;
 
-		console.log('clusterId:', clusterId);
-
 		self[reset]();
 		self[LOADING_TAGS] = 1;
 		self[LOADED_TAGS] = 0;
@@ -501,39 +493,31 @@ export default class Load {
 
 	query(query, ...args) {
 		const queryLower = query.toLocaleLowerCase();
-		this.onQuery()();
-
-		console.log('*** query:', query, args[0]);
+		self.onQuery()();
 
 		if (isNumber(query, true)) {
-			console.log('    *** query type: Image id');
-			this.loadImage(query);
+			self.loadImage(query);
 		}
 		else if (queryLower.indexOf('person ') === 0) {
-			console.log('    *** query type: Person id');
-			this.loadPerson(queryLower.replace('person ', ''));
+			self.loadPerson(queryLower.replace('person ', ''));
 		}
-		else if (this[ALL_TAGS_LOWERCASE].includes(queryLower)) {
-			console.log('    *** query type: Tag');
-			this.loadTag(this[ALL_TAGS][this[ALL_TAGS_LOWERCASE].indexOf(queryLower)]);
+		else if (self[ALL_TAGS_LOWERCASE].includes(queryLower)) {
+			self.loadTag(self[ALL_TAGS][self[ALL_TAGS_LOWERCASE].indexOf(queryLower)]);
 		}
-		else if (['city', 'state', 'country'].includes(args[0])) {
-			console.log('    *** query type: Location');
-			this.loadLocation(query, args[0]);
+		else if (['city', 'state', 'country'].includes(type)) {
+			self.loadLocation(query, type);
 		}
-		else if (args[0] === 'time') {
-			console.log('    *** query type: Date/Time');
-			this.loadDate(query);
+		else if (type === 'time') {
+			self.loadDate(query);
 		}
 		else {
 			const words = queryLower.split(' ');
 
 			if (words.length === 3) {
-				console.log('    *** query type: Semantic');
 				this.loadSemantic(words);
 			}
 			else {
-				console.log('unknown type: ', query);
+				console.warn('unknown query: ', query);
 			}
 		}
 	}
