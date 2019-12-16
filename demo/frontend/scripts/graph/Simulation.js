@@ -1,16 +1,20 @@
-import { forceLink, forceManyBody, forceSimulation, forceX, forceY } from 'd3';
+import { forceCollide, forceLink, forceManyBody, forceSimulation, forceX, forceY } from 'd3';
 import { method } from 'type-enforcer-ui';
 
 const SIMULATION = Symbol();
+const GRAPH_DB = Symbol();
 const CHARGE = 'charge';
 const CHARGE_FORCE = 'charge';
 const LINK_FORCE = 'links';
+const COLLISION_FORCE = 'collision';
 const X_FORCE = 'x';
 const Y_FORCE = 'y';
 
 export default class Simulation {
-	constructor() {
+	constructor(graphDb) {
 		const self = this;
+
+		self[GRAPH_DB] = graphDb;
 
 		this[SIMULATION] = forceSimulation()
 			.force(CHARGE_FORCE, forceManyBody().strength((d) => {
@@ -19,6 +23,7 @@ export default class Simulation {
 			.force(LINK_FORCE, forceLink())
 			.force(X_FORCE, forceX().strength(this.xStrength()))
 			.force(Y_FORCE, forceY().strength(this.yStrength()))
+			.force(COLLISION_FORCE, forceCollide().radius((d) => d.rPlus))
 			.on('tick', () => self.onTick()())
 			.alphaMin(0.0001);
 	}
@@ -28,7 +33,7 @@ export default class Simulation {
 			nodes: this.nodes(),
 			edges: this.links()
 		};
-		const weightMultiplier = 1 / Math.sqrt((data.nodes.length || 1) / (data.edges.length || 1));
+
 		this[CHARGE] = Math.pow(data.edges.length / data.nodes.length, 2) * -this.nodeCharge();
 		const linkStrength = this.linkStrength();
 
@@ -36,7 +41,12 @@ export default class Simulation {
 
 		this[SIMULATION].force(LINK_FORCE)
 			.id((d) => d.id)
-			.strength((d) => (d.weight + linkStrength) * weightMultiplier)
+			.strength((d) => {
+				return (d.weight + linkStrength) * (1 / Math.min(
+					this[GRAPH_DB].linkCount(d.source),
+					this[GRAPH_DB].linkCount(d.target)
+				));
+			})
 			.links(data.edges);
 
 		this.bump();

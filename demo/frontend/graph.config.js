@@ -3,7 +3,7 @@ module.exports = {
 	apiUrl: 'http://10.145.83.34:7070/',
 	graphSettings: {
 		normalizeWeights: false,
-		nodeCharge: 240,
+		nodeCharge: 50,
 		clipNodes: false,
 		linkStrength: 1.5,
 		calcNodeWeightBy: 'done',

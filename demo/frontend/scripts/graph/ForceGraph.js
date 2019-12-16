@@ -39,7 +39,7 @@ export default class ForceGraph {
 				self[SIMULATION].bump();
 				self[NODES].zoom(k);
 			});
-		self[SIMULATION] = new Simulation()
+		self[SIMULATION] = new Simulation(self[GRAPH_DB])
 			.onTick(() => {
 				const count = self[NODES].render(self[LAYOUT].bounds());
 				forOwn(self[STATS].nodes, (value, key) => {

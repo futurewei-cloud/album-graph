@@ -406,9 +406,13 @@ export default class GraphDB {
 		return this[IS_LINK_WEIGHT_NORMALIZED];
 	}
 
-	hasLinks(node) {
+	linkCount(node) {
 		const link = getLink.call(this, node.id);
-		return link && link.all.length > 0;
+		return link ? link.all.length : 0;
+	}
+
+	hasLinks(node) {
+		return this.linkCount(node) > 0;
 	}
 
 	linkedNodes(node) {
