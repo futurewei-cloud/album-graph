@@ -1,6 +1,8 @@
+import { debounce, defer } from 'async-agent';
 import { json } from 'd3';
+import { List } from 'hord';
 import { clone, forOwn, isEmpty } from 'object-agent';
-import { enforceDate, isDate, isNumber, method } from 'type-enforcer';
+import { castArray, enforceDate, isDate, isNumber, isString, method } from 'type-enforcer-ui';
 import { DATE_ICON, LOCATION_ICON, PERSON_ICON, TAG_ICON } from './icons';
 
 const TARGET_IMAGES = 50;
@@ -8,6 +10,8 @@ const DATE_SEPARATOR = '/';
 const DATASET = 's';
 
 const clamp = (num, min, max) => num < min ? min : num > max ? max : num;
+
+const lengthSort = (a, b) => b.length - a.length;
 
 const selectedProps = {
 	isSelected: true
@@ -22,6 +26,7 @@ const NODE_IDS = Symbol();
 const LOADING_TAGS = Symbol();
 const LOADED_TAGS = Symbol();
 const CACHE = Symbol();
+const ALL_SUGGESTIONS = Symbol();
 const ALL_TAGS = Symbol();
 const ALL_TAGS_LOWERCASE = Symbol();
 const PEOPLE = Symbol();
@@ -40,15 +45,59 @@ export default class Load {
 	constructor(data) {
 		const self = this;
 
+		const emitSuggestions = debounce(() => {
+			if (self.onLoadSearch()) {
+				self.onLoadSearch()(clone(self[ALL_SUGGESTIONS].values()));
+			}
+		});
+
+		const addSuggestions = (items, icon, classes) => {
+			castArray(items).forEach((item) => {
+				if (item) {
+					if (isString(item)) {
+						item = {
+							title: item,
+							subTitle: ''
+						};
+					}
+
+					if (!item.id) {
+						item.id = item.title.replace(/ /g, '_');
+					}
+					if (icon && !item.icon) {
+						item.icon = icon;
+					}
+					if (classes && !item.classes) {
+						item.classes = classes;
+					}
+
+					self[ALL_SUGGESTIONS].addUnique(item);
+				}
+			});
+
+			emitSuggestions();
+		};
+
 		const loadAllTags = () => {
 			Load.loadJson('alltags', 'arg=NA')
 				.then((tags) => {
-					self[ALL_TAGS] = tags;
+					self[ALL_TAGS] = tags.sort(lengthSort);
 					self[ALL_TAGS_LOWERCASE] = tags.map((tag) => tag.toLocaleLowerCase());
 
-					if (self.onLoadSearch()) {
-						self.onLoadSearch()(self[ALL_TAGS]);
-					}
+					addSuggestions(self[ALL_TAGS], TAG_ICON, 'tag');
+				});
+		};
+
+		const loadLocation = (need, type) => {
+			Load.loadJson(need, 'arg=NA')
+				.then((data) => {
+					data.forEach((location) => {
+						addSuggestions({
+							id: location.replace(' ', '_') + '~' + type,
+							title: location,
+							subTitle: type
+						}, LOCATION_ICON, 'location');
+					});
 				});
 		};
 
@@ -56,19 +105,24 @@ export default class Load {
 			Load.getPersonImages(clusterId)
 				.then((images) => {
 					if (!isEmpty(images)) {
-						self[CACHE]['Person ' + clusterId] = images;
+						const label = 'Person ' + clusterId;
+
+						self[CACHE][label] = images;
 						loadPeople(clusterId + 1);
 
 						self[PEOPLE].push({
-							tag: 'Person ' + clusterId,
+							tag: label,
 							clusterId: clusterId,
 							images: Object.keys(images)
 						});
+
+						addSuggestions(label, PERSON_ICON, 'person');
 					}
 				});
 		};
 
 		config = data;
+		self[ALL_SUGGESTIONS] = new List().sorter(List.sorter.id.asc);
 		self[ALL_TAGS] = [];
 		self[ALL_TAGS_LOWERCASE] = [];
 		self[PEOPLE] = [];
@@ -79,6 +133,10 @@ export default class Load {
 		self[LOADING_TAGS] = 0;
 
 		loadAllTags();
+		loadRelationships();
+		loadLocation('allcities', 'city');
+		loadLocation('allstates', 'state');
+		loadLocation('allcountries', 'country');
 		loadPeople(0);
 	}
 
