@@ -1,8 +1,7 @@
 import { drag, event, select } from 'd3';
 import { uniq } from 'lodash';
-import { clone } from 'object-agent';
-import { method } from 'type-enforcer';
-import { eachPair } from '../graphHelper';
+import { clone, combo } from 'object-agent';
+import { method } from 'type-enforcer-ui';
 import LabelPlacer from './LabelPlacer';
 import './Nodes.less';
 
@@ -158,7 +157,7 @@ const highlightPaths = function(buildSelected = false) {
 		if (buildSelected) {
 			this[SELECTED_PATHS].length = 0;
 
-			eachPair(this[SELECTED], (node1, node2) => {
+			combo(this[SELECTED]).forEach(([node1, node2]) => {
 				promises.push(getPaths(node1, node2, this[SELECTED_PATHS]));
 			});
 		}

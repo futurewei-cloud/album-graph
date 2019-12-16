@@ -1,23 +1,3 @@
-export const eachPair = (array, callback) => {
-	let i;
-	let j;
-	const length = array.length;
-	let doBreak = false;
-
-	for (i = 0; i < length; i++) {
-		for (j = i + 1; j < length; j++) {
-			if (callback(array[i], array[j])) {
-				doBreak = true;
-				break;
-			}
-		}
-
-		if (doBreak) {
-			break;
-		}
-	}
-};
-
 export const isLinkInBounds = (link, bounds) => {
 	return !((link.source.x < bounds.minX && link.target.x < bounds.minX) || (link.source.x > bounds.maxX && link.target.x > bounds.maxX) || (link.source.y < bounds.minY && link.target.y < bounds.minY) || (link.source.y > bounds.maxY && link.target.y > bounds.maxY));
 };

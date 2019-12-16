@@ -1,8 +1,7 @@
 import { List } from 'hord';
 import { debounce } from 'lodash';
-import { forOwn } from 'object-agent';
-import { Enum, method } from 'type-enforcer';
-import { eachPair } from './graphHelper';
+import { combo, forOwn } from 'object-agent';
+import { Enum, method } from 'type-enforcer-ui';
 import WeightNormalizer from './WeightNormalizer';
 
 const processData = (options) => new Promise((resolve) => {
@@ -111,7 +110,7 @@ const filter = debounce(function() {
 		const hiddenNodeTypes = self.hiddenNodeTypes();
 
 		const saveNewLinks = (linkableNodes, mergedLinks) => {
-			eachPair(linkableNodes, (node1, node2) => {
+			combo(linkableNodes).forEach(([node1, node2]) => {
 				const match = newLinks.find((link) => {
 					return (link.source === node1 && link.target === node2) || (link.source === node2 && link.target === node1);
 				});

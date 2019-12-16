@@ -1,4 +1,4 @@
-import { Enum, method, Vector } from 'type-enforcer';
+import { Enum, method, Vector } from 'type-enforcer-ui';
 import './Links.less';
 
 const LINK_STYLES = new Enum({
@@ -241,7 +241,8 @@ export default class Links {
 		};
 
 		const isSecondaryLink = (link) => {
-			return highlightNodeType ? false : this[GRAPH_DB].isLinked(focusedNode, link.source) || this[GRAPH_DB].isLinked(focusedNode, link.target);
+			return highlightNodeType ? false : this[GRAPH_DB].isLinked(focusedNode, link.source) ||
+				this[GRAPH_DB].isLinked(focusedNode, link.target);
 		};
 
 		this[SELECTION]
