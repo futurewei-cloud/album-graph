@@ -1,8 +1,10 @@
 import { delay } from 'async-agent';
+import { formatRelative } from 'date-fns';
 import { Container, Drawer, LocalHistory, Section, theme } from 'hafgufa';
 import { windowResize } from 'type-enforcer-ui';
 import config from '../graph.config';
 import './app.less';
+import FilterView from './FilterView';
 import ForceGraph from './graph/ForceGraph';
 import Header from './Header';
 import Load from './Load';
@@ -18,6 +20,7 @@ const HISTORY = Symbol();
 const CONTROL_LAYER = Symbol();
 const HEADER = Symbol();
 const SELECTION_PANEL = Symbol();
+const FILTER_VIEW = Symbol();
 
 class App {
 	constructor() {
@@ -60,6 +63,14 @@ class App {
 			})
 			.onLoadSearch((suggestions) => {
 				self[HEADER].suggestions(suggestions);
+				if (self[FILTER_VIEW]) {
+					self[FILTER_VIEW].tags(suggestions.filter((suggestion) => suggestion.classes === 'tag'));
+					self[FILTER_VIEW].locations(suggestions.filter((suggestion) => suggestion.classes === 'location'));
+					self[FILTER_VIEW].people(suggestions.filter((suggestion) => suggestion.classes === 'person'));
+				}
+			})
+			.onLoadEvents((events) => {
+				self[FILTER_VIEW].events(events);
 			});
 	}
 
@@ -148,28 +159,60 @@ class App {
 			}
 		});
 
+		const FILTER_SECTION_ID = 'filterSection';
+		const FILTER_VIEW_ID = 'filterView';
+		const filterDrawerOpenDefault = false;
+
 		const eventDrawer = new Drawer({
 			container: self[CONTROL_LAYER],
 			dock: 'bottom',
 			canResize: false,
 			overlap: Drawer.OVERLAP.ALWAYS,
-			isOpen: false,
+			isOpen: filterDrawerOpenDefault,
 			height: '90vh',
 			maxHeight: '25rem',
 			closedSize: '2.2em',
 			isAnimated: true,
 			content: [{
 				control: Section,
+				id: FILTER_SECTION_ID,
 				title: 'Filters',
 				headingIcon: '',
 				height: '100%',
 				padding: '0 1.25rem 1.25rem',
-				isCollapsed: true,
+				isCollapsed: !filterDrawerOpenDefault,
 				onCollapse() {
-					eventDrawer.isOpen(!eventDrawer.isOpen());
+					eventDrawer.isOpen(!this.isCollapsed());
+						self[FILTER_VIEW].resize(true);
+				},
+				content: {
+					control: FilterView,
+					id: FILTER_VIEW_ID,
+					width: '100%',
+					onChange(data) {
+						let subTitle = '';
+
+						if (data.when.length !== 0) {
+							subTitle += formatRelative(data.when[0], new Date()) + ' to ' + formatRelative(data.when[1], new Date());
+						}
+
+						['where', 'who', 'what'].forEach((key) => {
+							if (data[key].length !== 0) {
+								if (subTitle !== '') {
+									subTitle += ' and ';
+								}
+
+								subTitle += key.toUpperCase() + ': ' + data[key].map((value) => value.title).join(', ');
+							}
+						});
+
+						eventDrawer.get(FILTER_SECTION_ID).subTitle(subTitle);
+					}
 				}
 			}]
 		});
+
+		self[FILTER_VIEW] = eventDrawer.get(FILTER_VIEW_ID);
 	}
 }
 

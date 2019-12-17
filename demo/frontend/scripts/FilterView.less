@@ -1,0 +1,100 @@
+@import (reference) 'app.less';
+
+@eventWidth: 0.3em;
+
+.filter-view {
+	user-select: unset;
+	position: relative;
+	height: calc(100% - 2.2em);
+
+	.single-line {
+		margin: 0.2em 0;
+
+		> .heading {
+			width: 5em !important;
+			line-height: 1.6em;
+		}
+	}
+}
+
+.time-span {
+	> div {
+		position: absolute;
+		width: 100%;
+		left: -@eventWidth / 2;
+		top: 0.4em;
+	}
+
+	.heading {
+		overflow: visible;
+
+		@smallSize: 0.15rem;
+		@secondarySize: 0.29rem;
+		@primarySize: 0.36rem;
+
+		.tick {
+			border-radius: @primarySize / 2;
+			height: @smallSize;
+			width: @smallSize;
+			transform: translate(-@smallSize / 2, -@smallSize /  2);
+
+			&.secondary {
+				height: @secondarySize;
+				width: @secondarySize;
+				transform: translate(-@secondarySize / 2, -@secondarySize /  2);
+			}
+
+			&.primary {
+				height: @primarySize;
+				width: @primarySize;
+				transform: translate(-@primarySize / 2, -@primarySize /  2);
+			}
+		}
+	}
+}
+
+.event {
+	width: @eventWidth;
+	bottom: 1px;
+	background: linear-gradient(to bottom, fade(@timeColor, 75%), fade(@timeColor, 25%));
+	position: absolute;
+	border-radius: 1px;
+}
+
+.timeline-slider {
+	position: absolute;
+	top: 0;
+	pointer-events: none !important;
+
+	> div {
+		pointer-events: none !important;
+
+		.track {
+			background: transparent;
+			height: 100%;
+			margin: 0;
+			pointer-events: none !important;
+
+			&:after {
+				box-shadow: none;
+			}
+		}
+
+		.range {
+			opacity: 0.2;
+			height: 100%;
+			margin: 0;
+			border-radius: 0.75rem;
+
+			&:after {
+				box-shadow: none;
+			}
+		}
+
+		.form-button {
+			height: 100%;
+			border-radius: 0.75rem;
+			pointer-events: all;
+		}
+	}
+}

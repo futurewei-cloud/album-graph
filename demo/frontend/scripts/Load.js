@@ -1,4 +1,4 @@
-import { debounce, defer } from 'async-agent';
+import { debounce } from 'async-agent';
 import { json } from 'd3';
 import { IS_PHONE } from 'hafgufa';
 import { List } from 'hord';
@@ -31,6 +31,7 @@ const ALL_SUGGESTIONS = Symbol();
 const ALL_TAGS = Symbol();
 const ALL_TAGS_LOWERCASE = Symbol();
 const PEOPLE = Symbol();
+const EVENTS = Symbol();
 
 const reset = Symbol();
 const saveImage = Symbol();
@@ -132,10 +133,71 @@ export default class Load {
 				});
 		};
 
+		const loadEvents = () => {
+			let eventLoadCount = 0;
+			let eventLoadId = 0;
+			let isDone = false;
+
+			const loadChunk = () => {
+				if (!eventLoadCount) {
+					if (isDone) {
+						if (self.onLoadEvents()) {
+							self.onLoadEvents()(self[EVENTS]);
+						}
+					}
+					else {
+						for (let index = 0; index < 10; index++) {
+							eventLoadCount++;
+							eventLoadId++;
+							load(eventLoadId);
+						}
+					}
+				}
+			};
+
+			const load = (id) => {
+				Load.getEventImages(id)
+					.then((images) => {
+						const minDate = new Date('9/1/2010').valueOf();
+						const maxDate = new Date().valueOf();
+
+						eventLoadCount--;
+
+						if (!isEmpty(images)) {
+							const label = 'Event ' + id;
+
+							images = Object.keys(images);
+
+							if (!isEmpty(images)) {
+								self[CACHE][label] = images;
+
+								self[EVENTS].push({
+									tag: label,
+									id: id,
+									date: id === 1 ? new Date() : new Date(Math.round(Math.random() * (maxDate - minDate)) + minDate),
+									images: images
+								});
+
+								addSuggestions(label, DATE_ICON, 'event');
+							}
+
+						}
+						else {
+							isDone = true;
+						}
+
+						loadChunk();
+					});
+			};
+
+			loadChunk();
+		};
+
 		config = data;
 		self[ALL_SUGGESTIONS] = new List().sorter(List.sorter.id.asc);
 		self[ALL_TAGS] = [];
 		self[ALL_TAGS_LOWERCASE] = [];
+		self[EVENTS] = [];
 		self[PEOPLE] = [];
 		self[CACHE] = {};
 		self[CACHE].specs = {};
@@ -149,6 +211,7 @@ export default class Load {
 		loadLocation('allstates', 'state');
 		loadLocation('allcountries', 'country');
 		loadPeople(0);
+		loadEvents();
 	}
 
 	static loadJson(need, params) {
@@ -189,6 +252,10 @@ export default class Load {
 
 	static getSemanticImages(words) {
 		return Load.loadJson('semantic', `subj=${words[0]}&predicate=${words[1]}&obj=${words[2]}`);
+	}
+
+	static getEventImages(id) {
+		return Load.loadJson('event', `arg=${id}`);
 	}
 
 	static buildImageUrl(src, size = 'm') {
@@ -611,5 +678,6 @@ Object.assign(Load.prototype, {
 	onQuery: method.function(),
 	onLoad: method.function(),
 	onLoadSearch: method.function(),
+	onLoadEvents: method.function(),
 	onDone: method.function()
 });
