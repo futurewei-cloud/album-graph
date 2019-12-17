@@ -580,10 +580,25 @@ export default class Load {
 			self.loadDate(query);
 		}
 		else {
-			const words = queryLower.split(' ');
+			let startTag;
+			let endTag;
 
-			if (words.length === 3) {
-				this.loadSemantic(words);
+			const isStartTag = self[ALL_TAGS_LOWERCASE].some((tag, index) => {
+				startTag = index;
+				return queryLower.indexOf(tag) === 0;
+			});
+			const isEndTag = self[ALL_TAGS_LOWERCASE].some((tag, index) => {
+				endTag = index;
+				return queryLower.indexOf(tag) + tag.length === queryLower.length;
+			});
+
+			if (isStartTag && isEndTag) {
+				const predicate = queryLower
+					.replace(self[ALL_TAGS_LOWERCASE][startTag], '')
+					.replace(self[ALL_TAGS_LOWERCASE][endTag], '')
+					.trim();
+
+				self.loadSemantic([self[ALL_TAGS][startTag], predicate, self[ALL_TAGS][endTag]]);
 			}
 			else {
 				console.warn('unknown query: ', query);
