@@ -2,6 +2,11 @@
 
 This repository provides an implementation for **Album Graph**, which is a framework based on an alternated property graph model incorporating with arbitrary plugins of AI models for organizing multimedia resources, such as photos/videos, in various ways. Alubm graph offers an innovative approach to support semantic photo search/recommendation, style based photo organized, and more.
 
+# Demo
+
+Please follow the instruction in [demo](demo) to start the demo. The following sections in this page are more backgrounds.
+
+
 ## Motivation
 
 Due to recent advances in mobile devices, many cellphones install more and more advanced cameras and super large cloud storage, making a cellphone perfect for taking pictures/videos. However, seeking a picture you want from tons stored on cloud is not less painful than finding a needle in haystack. Some apps provide methods to relieve the headache to some extent by organizing pictures according to the faces, things, locations, or types of media. However, this is far from solving a simple query like finding the picture with a dog walking on a beach, not to mention queries like finding pictures of my kids' drawing. 
