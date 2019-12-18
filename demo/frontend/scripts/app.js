@@ -124,8 +124,8 @@ class App {
 			},
 			filterFunc(node) {
 				if (self[HAS_FILTER_DATA] && node.type === 'image') {
-					if (self[FILTER_DATA].when.length !== 0 && node.meta.datatime) {
-						const date = new Date(node.meta.datatime).valueOf();
+					if (self[FILTER_DATA].when.length !== 0 && node.meta.datetime) {
+						const date = new Date(node.meta.datetime).valueOf();
 
 						if (date >= self[FILTER_DATA].when[0] && date <= self[FILTER_DATA].when[1]) {
 							return false;

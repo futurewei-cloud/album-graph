@@ -551,7 +551,7 @@ export default class Load {
 
 			self[saveImage](data.image_path[0], id, true, {
 				gps: data.latitude[0] === -999 ? '-' : data.latitude[0] + ', ' + data.longitude[0],
-				datatime: data.datetime[0].indexOf('1970-01-01') === -1 ? data.datetime[0] : '-',
+				datetime: data.datetime[0].indexOf('1970-01-01') === -1 ? data.datetime[0] : '-',
 				device: data.model[0] || '-',
 				file: data.image_path
 			});

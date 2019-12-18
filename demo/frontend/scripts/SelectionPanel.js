@@ -159,7 +159,7 @@ Object.assign(SelectionPanel.prototype, {
 
 					addDescription('ID:', node.id, {margin: '1em 0 0'});
 					addDescription('File:', getImageFileName(node.image.large));
-					addDescription('Date:', node.meta.datatime);
+					addDescription('Date:', node.meta.datetime);
 					addDescription('GPS:', node.meta.gps);
 					addDescription('Device:', node.meta.device);
 				}

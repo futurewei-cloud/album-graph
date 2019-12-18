@@ -114,7 +114,7 @@ if __name__ == '__main__':
                                 datetime = exif[key].__str__()
                                 datetime = datetime[:4]+'/' + \
                                     datetime[5:7]+'/'+datetime[8:]
-                                print 'datatime', datetime
+                                print 'datetime', datetime
                             if key == 'Model':
                                 model = exif[key].__str__()
                                 #print 'model',model
