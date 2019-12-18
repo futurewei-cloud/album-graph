@@ -6,5 +6,6 @@ Tools to manage data in gremlin server
 ```
 # add data to gremlin database
 $ python add_data_to_gremlin.py
+# start the API server
 $ python server.py
 ```
