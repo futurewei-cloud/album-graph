@@ -29,7 +29,7 @@ def search_tagalbum(g, tag, dataset):
     """search the image with the specific tag from the albumgraph.
     Args:
         g - graph from gremlin server
-        tag - image tag user want 
+        tag - image tag user want
         dataset- 'l' for large dataset, 's' for small dataset
     Returns:
         tag_album - an album of images with same tag.
@@ -52,7 +52,7 @@ def search_modelalbum(g, model, dataset):
     """search the image with the specific model from the albumgraph.
     Args:
         g - graph from gremlin server
-        model - the model user want 
+        model - the model user want
         dataset- 'l' for large dataset, 's' for small dataset
     Returns:
         model_album - an album of images with same model.
@@ -74,7 +74,7 @@ def search_countryalbum(g, country, dataset):
     """search the image with the specific country from the albumgraph.
     Args:
         g - graph from gremlin server
-        country - the country user want    
+        country - the country user want
         dataset- 'l' for large dataset, 's' for small dataset
     Returns:
         country_album - an album of images with same country.
@@ -96,7 +96,7 @@ def search_statealbum(g, state, dataset):
     """search the image with the specific state from the albumgraph.
     Args:
         g - graph from gremlin server
-        state - the state user want 
+        state - the state user want
         dataset- 'l' for large dataset, 's' for small dataset
     Returns:
         state_album - an album of images with same state.
@@ -118,7 +118,7 @@ def search_cityalbum(g, city, dataset):
     """search the image with the specific city from the albumgraph.
     Args:
         g - graph from gremlin server
-        city - the city user want 
+        city - the city user want
         dataset- 'l' for large dataset, 's' for small dataset
     Returns:
         city_album - an album of images with same city.
@@ -140,7 +140,7 @@ def search_facealbum(g, face, dataset):
     """search the image with the face_id from the albumgraph.
     Args:
         g - graph from gremlin server
-        face - the face_id user want 
+        face - the face_id user want
         dataset- 'l' for large dataset, 's' for small dataset
     Returns:
         face_album - an album of images with same face_id.
@@ -163,7 +163,7 @@ def search_eventalbum(g, event, dataset):
     """search the image with the event_id from the albumgraph.
     Args:
         g - graph from gremlin server
-        event - the event_id user want 
+        event - the event_id user want
         dataset- 'l' for large dataset, 's' for small dataset
     Returns:
         event_album - an album of images with same event_id.
@@ -568,7 +568,7 @@ def search_timealbum(g, timerange, dataset):
     image_id = g.V().has('datetime', P.inside(
         timerange[0], timerange[1])).values('image_id').toList()
     image_path = g.V().has('datetime', P.inside(
-        timerange[0], timerange[1])).values('datetime').order().toList()
+        timerange[0], timerange[1])).values('image_path').toList()
     for i in range(len(image_id)):
         if image_id[i] not in time_album:
             time_album[image_id[i]] = image_path[i]
@@ -721,7 +721,7 @@ def pagerank(g,dataset):
         directed -
         dataset- 'l' for large dataset, 's' for small dataset
     Returns:
-        data - 
+        data -
     """
     print "using pagerank: "
     algorithm='{\
@@ -744,10 +744,10 @@ def realtime_recommendation(g,arg,dataset):
     """get data with pagerank algorithm from the albumgraph.
     Args:
         g - graph from gremlin server
-        
+
         dataset- 'l' for large dataset, 's' for small dataset
     Returns:
-        data - 
+        data -
     """
     print "realtime_recommendation: "
     algorithm = "{{'algorithmName':'realtime_recommendation','parameters':{{'sources':'{}','alpha':0.85,'N':10000,'nv':5,'np':1000,'label':'image','directed':false }} }}".format('tag'+arg[0])
@@ -755,7 +755,7 @@ def realtime_recommendation(g,arg,dataset):
     if int(arg[1])==0:return recommendation_album
     job_id=algorithm_action(g,algorithm,dataset)
     jobdata=check_job(g,job_id,dataset,0,int(arg[1]))
-    
+
     if 'errorCode' in jobdata: return recommendation_album
     data=jobdata['data']['outputs']['score']
     print "jobdata",data
@@ -769,7 +769,7 @@ def realtime_recommendation(g,arg,dataset):
     for image in data['vertices']:
         image_id=image['properties']['image_id'][0]
         image_path=image['properties']['image_path'][0]
-        if image_id not in recommendation_album: 
+        if image_id not in recommendation_album:
             recommendation_album[image_id]=image_path
             print image_id,image_path
     return recommendation_album
@@ -785,7 +785,7 @@ def personalrank(g,dataset):
         directed -
         dataset- 'l' for large dataset, 's' for small dataset
     Returns:
-        data - 
+        data -
     """
     print "using personalrank: "
     algorithm='{\
@@ -815,7 +815,7 @@ def pagerank(g,dataset):
         directed -
         dataset- 'l' for large dataset, 's' for small dataset
     Returns:
-        data - 
+        data -
     """
     print "using pagerank: "
     algorithm='{\
