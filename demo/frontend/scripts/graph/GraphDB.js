@@ -108,6 +108,7 @@ const filter = debounce(function() {
 		const oldNodes = {};
 		let mergedLinks = 0;
 		const hiddenNodeTypes = self.hiddenNodeTypes();
+		const filterFunc = self.filterFunc();
 
 		const saveNewLinks = (linkableNodes, mergedLinks) => {
 			combo(linkableNodes).forEach(([node1, node2]) => {
@@ -157,7 +158,7 @@ const filter = debounce(function() {
 			}
 		};
 
-		if (hiddenNodeTypes.length || self.filterFunc()) {
+		if (hiddenNodeTypes.length || filterFunc !== undefined) {
 			data.nodes.forEach((node) => {
 				checkNode(node);
 			});
@@ -166,15 +167,15 @@ const filter = debounce(function() {
 				hiddenNodeTypes.includes(edge.target.type)));
 			data.nodes = data.nodes.filter((node) => !hiddenNodeTypes.includes(node.type));
 
-			if (self.filterFunc()) {
+			if (filterFunc !== undefined) {
 				data.nodes = data.nodes.filter((node) => {
-					const isKeep = !self.filterFunc()(getNode.call(self, node.id, true));
+					const discard = filterFunc(node);
 
-					if (!isKeep) {
-						data.edges = data.edges.filter((edge) => edge.source.id === node.id || edge.target.id === node.id);
+					if (discard) {
+						data.edges = data.edges.filter((edge) => !(edge.source.id === node.id || edge.target.id === node.id));
 					}
 
-					return isKeep;
+					return !discard;
 				});
 			}
 
