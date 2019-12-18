@@ -1,8 +1,8 @@
-import { debounce } from 'async-agent';
+import { debounce, throttle } from 'async-agent';
 import { json } from 'd3';
 import { IS_PHONE } from 'hafgufa';
 import { List } from 'hord';
-import { clone, forOwn, isEmpty } from 'object-agent';
+import { clone, forOwn, isEmpty, superimpose } from 'object-agent';
 import { castArray, enforceDate, isDate, isNumber, isString, method } from 'type-enforcer-ui';
 import { DATE_ICON, LOCATION_ICON, PERSON_ICON, SEMANTIC_ICON, TAG_ICON } from './icons';
 
@@ -43,6 +43,7 @@ const loadSemanticImages = Symbol();
 const loadLocationImages = Symbol();
 const loadDateImages = Symbol();
 const loadPersonImages = Symbol();
+const triggerLoad = Symbol();
 
 export default class Load {
 	constructor(data) {
@@ -118,6 +119,7 @@ export default class Load {
 				.then((images) => {
 					if (!isEmpty(images)) {
 						const label = 'Person ' + clusterId;
+						const ids = Object.keys(images);
 
 						self[CACHE][label] = images;
 						loadPeople(clusterId + 1);
@@ -125,8 +127,21 @@ export default class Load {
 						self[PEOPLE].push({
 							tag: label,
 							clusterId: clusterId,
-							images: Object.keys(images)
+							images: ids
 						});
+
+						let isUpdate = false;
+
+						self.data.nodes.forEach((node) => {
+							if (ids.includes(node.id) && !isEmpty(node.meta)) {
+								node.meta.person.push(clusterId);
+								isUpdate = true;
+							}
+						});
+
+						if (isUpdate) {
+							self[triggerLoad]();
+						}
 
 						addSuggestions(label, PERSON_ICON, 'person');
 					}
@@ -201,9 +216,13 @@ export default class Load {
 		self[PEOPLE] = [];
 		self[CACHE] = {};
 		self[CACHE].specs = {};
-		self[NODE_IDS] = [];
+		self[NODE_IDS] = new List();
 		self[LOADED_TAGS] = 0;
 		self[LOADING_TAGS] = 0;
+
+		self[triggerLoad] = throttle(() => {
+			self.onLoad()(clone(self.data));
+		}, 200);
 
 		loadAllTags();
 		loadRelationships();
@@ -263,7 +282,7 @@ export default class Load {
 	}
 
 	[reset]() {
-		this[NODE_IDS].length = 0;
+		this[NODE_IDS].discardAll();
 
 		this[LOADING_TAGS] = 1;
 		this[LOADED_TAGS] = 0;
@@ -298,10 +317,14 @@ export default class Load {
 			}
 
 			this.data.nodes.push(data);
-			this[NODE_IDS].push(imageId);
+			this[NODE_IDS].add(imageId);
 
 			return true;
 		}
+
+		const data = this.data.nodes.find((item) => item.id === imageId);
+
+		superimpose(data.meta, meta, true);
 
 		return false;
 	}
@@ -334,6 +357,7 @@ export default class Load {
 			if (count < max) {
 				if (self[saveImage](image, imageId, false)) {
 					count++;
+					self.loadImage(imageId, false);
 				}
 
 				self.data.nodes.forEach((node) => {
@@ -348,7 +372,7 @@ export default class Load {
 			}
 		});
 
-		self.onLoad()(clone(self.data));
+		self[triggerLoad]();
 
 		self[LOADED_TAGS]++;
 		if (self[LOADED_TAGS] === self[LOADING_TAGS]) {
@@ -358,11 +382,14 @@ export default class Load {
 
 	[saveMeta](sourceId, type, tag) {
 		const sourceNode = this.data.nodes.find((node) => node.id === sourceId);
-		if (!sourceNode.meta[type]) {
-			sourceNode.meta[type] = [];
-		}
-		if (!sourceNode.meta[type].includes(tag)) {
-			sourceNode.meta[type].push(tag);
+
+		if (sourceNode) {
+			if (!sourceNode.meta[type]) {
+				sourceNode.meta[type] = [];
+			}
+			if (!sourceNode.meta[type].includes(tag)) {
+				sourceNode.meta[type].push(tag);
+			}
 		}
 	}
 
@@ -532,7 +559,7 @@ export default class Load {
 		}
 	}
 
-	loadImage(id) {
+	loadImage(id, loadMore = false) {
 		const self = this;
 		let imagesPerTag = 0;
 
@@ -545,53 +572,66 @@ export default class Load {
 		});
 
 		const loadNodes = (data) => {
-			const people = [];
-
 			self[CACHE].specs[id] = data;
 
-			self[saveImage](data.image_path[0], id, true, {
+			self[saveImage](data.image_path[0], id, loadMore, {
 				gps: data.latitude[0] === -999 ? '-' : data.latitude[0] + ', ' + data.longitude[0],
 				datetime: data.datetime[0].indexOf('1970-01-01') === -1 ? data.datetime[0] : '-',
 				device: data.model[0] || '-',
-				file: data.image_path
+				file: data.image_path,
+				tag: data.tag,
+				location: [data.city[0], data.state[0], data.country[0]].filter((item) => item !== ''),
+				person: self[PEOPLE].reduce((result, person) => {
+					if (person.images.includes(data.id)) {
+						result.push(person.clusterId);
+					}
+					return result;
+				}, [])
 			});
-			self.onLoad()(clone(self.data));
 
-			self[PEOPLE].forEach((person) => {
-				if (person.images.includes(id)) {
-					people.push(person.clusterId);
+			self[triggerLoad]();
+
+			if (loadMore) {
+				const people = [];
+
+				self[PEOPLE].forEach((person) => {
+					if (person.images.includes(id)) {
+						people.push(person.clusterId);
+					}
+				});
+
+				self[LOADING_TAGS] = data.tag.length + people.length;
+
+				imagesPerTag = clamp(Math.ceil(TARGET_IMAGES / (self[LOADING_TAGS] + 3)), 1, TARGET_IMAGES);
+
+				self[loadLocationImages](id, data.city[0], 'city', imagesPerTag);
+				self[loadLocationImages](id, data.state[0], 'state', imagesPerTag);
+				self[loadLocationImages](id, data.country[0], 'country', imagesPerTag);
+
+				imagesPerTag = clamp(Math.ceil(TARGET_IMAGES / self[LOADING_TAGS]), 1, TARGET_IMAGES);
+
+				if (isDate(data.datetime, true)) {
+					self[LOADING_TAGS]++;
+
+					let date = enforceDate(data.datetime[0], 0, true);
+					date = [date.getFullYear(), date.getMonth() + 1, date.getDate()];
+
+					if (!(date[0] === 1970 && date[1] === 1 && date[2] === 1)) {
+						self[loadDateImages](id, date, imagesPerTag);
+					}
 				}
-			});
 
-			self[LOADING_TAGS] = data.tag.length + people.length;
+				data.tag.forEach((tag) => self[loadTagImages](id, tag, imagesPerTag));
 
-			imagesPerTag = clamp(Math.ceil(TARGET_IMAGES / (self[LOADING_TAGS] + 3)), 1, TARGET_IMAGES);
+				people.forEach((clusterId) => self[loadPersonImages](id, clusterId, imagesPerTag));
 
-			self[loadLocationImages](id, data.city[0], 'city', imagesPerTag);
-			self[loadLocationImages](id, data.state[0], 'state', imagesPerTag);
-			self[loadLocationImages](id, data.country[0], 'country', imagesPerTag);
-
-			imagesPerTag = clamp(Math.ceil(TARGET_IMAGES / self[LOADING_TAGS]), 1, TARGET_IMAGES);
-
-			if (isDate(data.datetime, true)) {
-				self[LOADING_TAGS]++;
-
-				let date = enforceDate(data.datetime[0], 0, true);
-				date = [date.getFullYear(), date.getMonth() + 1, date.getDate()];
-
-				if (!(date[0] === 1970 && date[1] === 1 && date[2] === 1)) {
-					self[loadDateImages](id, date, imagesPerTag);
-				}
+				data.relationships.forEach((relationship) => self[loadSemanticImages](id, relationship, imagesPerTag));
 			}
-
-			data.tag.forEach((tag) => self[loadTagImages](id, tag, imagesPerTag));
-
-			people.forEach((clusterId) => self[loadPersonImages](id, clusterId, imagesPerTag));
-
-			data.relationships.forEach((relationship) => self[loadSemanticImages](id, relationship, imagesPerTag));
 		};
 
-		self[reset]();
+		if (loadMore) {
+			self[reset]();
+		}
 
 		if (self[CACHE].specs[id]) {
 			loadNodes(self[CACHE].specs[id]);
@@ -632,7 +672,7 @@ export default class Load {
 		self.onQuery()();
 
 		if (isNumber(query, true)) {
-			self.loadImage(query);
+			self.loadImage(query, true);
 		}
 		else if (queryLower.indexOf('person ') === 0 && isNumber(queryLower.replace('person ', ''), true)) {
 			self.loadPerson(queryLower.replace('person ', ''));
