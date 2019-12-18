@@ -70,7 +70,7 @@ export default class SelectionPanel {
 				control: Container,
 				id: 'contentContainerId',
 				isVisible: !IS_PHONE,
-				padding: '0 16px 16px'
+				padding: '0 16px 48px'
 			}, {
 				control: Heading,
 				id: 'selectionHeadingClosed',

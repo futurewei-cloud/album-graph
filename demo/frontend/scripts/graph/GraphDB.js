@@ -130,7 +130,7 @@ const filter = debounce(function() {
 		};
 
 		const checkNode = (node, level = 1) => {
-			if (this.hiddenNodeTypes().includes(node.type)) {
+			if (hiddenNodeTypes.includes(node.type)) {
 				if (!oldNodes[node.id]) {
 					if (level === 1) {
 						mergedLinks = 0;
@@ -140,8 +140,7 @@ const filter = debounce(function() {
 					mergedLinks++;
 					oldNodes[node.id] = true;
 
-					const nodeIndexEntry = self[FULL_LINK_INDEX]
-						.find({id: node.id});
+					const nodeIndexEntry = getLink.call(self, node.id, true);
 					if (nodeIndexEntry) {
 						nodeIndexEntry.all.forEach((id) => {
 							checkNode(getNode.call(this, id), level + 1);
@@ -158,13 +157,26 @@ const filter = debounce(function() {
 			}
 		};
 
-		if (hiddenNodeTypes.length) {
+		if (hiddenNodeTypes.length || self.filterFunc()) {
 			data.nodes.forEach((node) => {
 				checkNode(node);
 			});
 
-			data.edges = data.edges.filter((edge) => !(hiddenNodeTypes.includes(edge.source.type) || hiddenNodeTypes.includes(edge.target.type)));
+			data.edges = data.edges.filter((edge) => !(hiddenNodeTypes.includes(edge.source.type) ||
+				hiddenNodeTypes.includes(edge.target.type)));
 			data.nodes = data.nodes.filter((node) => !hiddenNodeTypes.includes(node.type));
+
+			if (self.filterFunc()) {
+				data.nodes = data.nodes.filter((node) => {
+					const isKeep = !self.filterFunc()(getNode.call(self, node.id, true));
+
+					if (!isKeep) {
+						data.edges = data.edges.filter((edge) => edge.source.id === node.id || edge.target.id === node.id);
+					}
+
+					return isKeep;
+				});
+			}
 
 			newLinks.forEach((link) => {
 				if (!this.isLinked(link.source, link.target)) {
@@ -229,6 +241,7 @@ const filter = debounce(function() {
 
 	const finalize = (data) => new Promise((resolve) => {
 		self[FILTERED_DATA] = data;
+
 		if (self.onFilter()) {
 			self.onFilter()(self[FILTERED_DATA]);
 		}
@@ -363,11 +376,13 @@ export default class GraphDB {
 					})
 					.then(resolve);
 			});
-
-			prevNodeIndex = null;
 		}
 
 		return self[FILTERED_DATA];
+	}
+
+	filter() {
+		return filter.call(this);
 	}
 
 	node(id) {
@@ -517,6 +532,7 @@ Object.assign(GraphDB.prototype, {
 	hiddenNodeTypes: method.array({
 		set: filter
 	}),
+	filterFunc: method.function(),
 	calcNodeWeightBy: method.enum({
 		enum: NODE_WEIGHT_TYPES,
 		init: NODE_WEIGHT_TYPES.NONE,

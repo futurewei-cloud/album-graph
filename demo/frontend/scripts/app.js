@@ -21,6 +21,8 @@ const CONTROL_LAYER = Symbol();
 const HEADER = Symbol();
 const SELECTION_PANEL = Symbol();
 const FILTER_VIEW = Symbol();
+const HAS_FILTER_DATA = Symbol();
+const FILTER_DATA = Symbol();
 
 class App {
 	constructor() {
@@ -30,6 +32,14 @@ class App {
 			.path('[name].[env].min.css')
 			.themes(['moonBeam.dark', 'moonBeam.light'])
 			.theme('moonBeam.dark');
+
+		self[HAS_FILTER_DATA] = false;
+		self[FILTER_DATA] = {
+			when: [],
+			where: [],
+			who: [],
+			what: []
+		};
 
 		self.buildLoad();
 		self.startHistory();
@@ -112,10 +122,40 @@ class App {
 
 				self[HISTORY].push([query, extraArg]);
 			},
+			filterFunc(node) {
+				if (self[HAS_FILTER_DATA] && node.type === 'image') {
+					if (self[FILTER_DATA].when.length !== 0 && node.meta.datatime) {
+						const date = new Date(node.meta.datatime).valueOf();
+
+						if (date >= self[FILTER_DATA].when[0] && date <= self[FILTER_DATA].when[1]) {
+							return false;
+						}
+					}
+
+					if (self[FILTER_DATA].where.length !== 0 &&
+						node.meta.location &&
+						node.meta.location.includes(self[FILTER_DATA].where[0].id)) {
+						return false;
+					}
+
+					if (self[FILTER_DATA].who.length !== 0 &&
+						node.meta.person &&
+						node.meta.person.includes(self[FILTER_DATA].who[0].title)) {
+						return false;
+					}
+
+					return !(self[FILTER_DATA].what.length !== 0 &&
+						node.meta.tag &&
+						node.meta.tag.includes(self[FILTER_DATA].what[0].id));
+				}
+
+				return false;
+			},
 			labelExtent: 0,
 			labelExtentOnMouseOver: 0,
 			singleSelect: true,
 			showLabelsOnNodes: true,
+			hideDetachedNodes: true,
 			...config.graphSettings
 		});
 
@@ -161,7 +201,7 @@ class App {
 
 		const FILTER_SECTION_ID = 'filterSection';
 		const FILTER_VIEW_ID = 'filterView';
-		const filterDrawerOpenDefault = false;
+		const filterDrawerOpenDefault = true;
 
 		const eventDrawer = new Drawer({
 			container: self[CONTROL_LAYER],
@@ -183,7 +223,7 @@ class App {
 				isCollapsed: !filterDrawerOpenDefault,
 				onCollapse() {
 					eventDrawer.isOpen(!this.isCollapsed());
-						self[FILTER_VIEW].resize(true);
+					self[FILTER_VIEW].resize(true);
 				},
 				content: {
 					control: FilterView,
@@ -192,12 +232,16 @@ class App {
 					onChange(data) {
 						let subTitle = '';
 
+						self[HAS_FILTER_DATA] = false;
+
 						if (data.when.length !== 0) {
+							self[HAS_FILTER_DATA] = true;
 							subTitle += formatRelative(data.when[0], new Date()) + ' to ' + formatRelative(data.when[1], new Date());
 						}
 
 						['where', 'who', 'what'].forEach((key) => {
 							if (data[key].length !== 0) {
+								self[HAS_FILTER_DATA] = true;
 								if (subTitle !== '') {
 									subTitle += ' and ';
 								}
@@ -207,6 +251,10 @@ class App {
 						});
 
 						eventDrawer.get(FILTER_SECTION_ID).subTitle(subTitle);
+
+						self[FILTER_DATA] = data;
+
+						self[FORCE_GRAPH].filter();
 					}
 				}
 			}]

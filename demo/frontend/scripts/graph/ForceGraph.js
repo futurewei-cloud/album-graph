@@ -1,5 +1,5 @@
 import { forOwn } from 'object-agent';
-import { method } from 'type-enforcer-ui';
+import { applySettings, method } from 'type-enforcer-ui';
 import './ForceGraph.less';
 import GraphDB from './GraphDB';
 import Layout from './Layout';
@@ -12,6 +12,9 @@ export { LINK_WEIGHT_TYPES, NODE_WEIGHT_TYPES } from './GraphDB';
 const mergeStats = (stats, field, graphStats) => {
 	stats.nodes.all[field] = 0;
 	forOwn(graphStats, (value, type) => {
+		if (!stats.nodes[type]) {
+			stats.nodes[type] = {};
+		}
 		stats.nodes[type][field] = value;
 		stats.nodes.all[field] += value;
 	});
@@ -107,11 +110,7 @@ export default class ForceGraph {
 				self.refresh();
 			});
 
-		forOwn(settings, (value, key) => {
-			if (self[key]) {
-				self[key](value);
-			}
-		});
+		applySettings(self, settings);
 	}
 
 	data(data) {
@@ -136,6 +135,10 @@ export default class ForceGraph {
 		});
 	}
 
+	filter() {
+		return this[GRAPH_DB].filter();
+	}
+
 	onSelectionChange(onChange) {
 		return this[NODES].onSelectionChange(onChange);
 	}
@@ -154,6 +157,10 @@ export default class ForceGraph {
 
 	hiddenNodeTypes(types) {
 		return this[GRAPH_DB].hiddenNodeTypes(types);
+	}
+
+	filterFunc(filterFunc) {
+		return this[GRAPH_DB].filterFunc(filterFunc);
 	}
 
 	calcNodeWeightBy(calcNodeWeightBy) {
