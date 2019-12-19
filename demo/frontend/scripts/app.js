@@ -1,6 +1,7 @@
 import { delay } from 'async-agent';
 import { formatRelative } from 'date-fns';
 import { Container, Drawer, LocalHistory, Section, theme } from 'hafgufa';
+import { clone } from 'object-agent';
 import { windowResize } from 'type-enforcer-ui';
 import config from '../graph.config';
 import './app.less';
@@ -23,6 +24,7 @@ const SELECTION_PANEL = Symbol();
 const FILTER_VIEW = Symbol();
 const HAS_FILTER_DATA = Symbol();
 const FILTER_DATA = Symbol();
+const DATA = Symbol();
 
 class App {
 	constructor() {
@@ -58,7 +60,9 @@ class App {
 				isFirst = true;
 			})
 			.onLoad((data) => {
-				self[FORCE_GRAPH].data(data)
+				self[DATA] = data;
+				self[FORCE_GRAPH]
+					.data(clone(data))
 					.then(() => {
 						if (isFirst) {
 							delay(() => {
@@ -254,7 +258,7 @@ class App {
 
 						self[FILTER_DATA] = data;
 
-						self[FORCE_GRAPH].filter();
+						self[FORCE_GRAPH].data(clone(self[DATA]));
 					}
 				}
 			}]
