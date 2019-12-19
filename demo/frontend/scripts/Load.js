@@ -192,10 +192,7 @@ export default class Load {
 									date: id === 1 ? new Date() : new Date(Math.round(Math.random() * (maxDate - minDate)) + minDate),
 									images: images
 								});
-
-								addSuggestions(label, DATE_ICON, 'event');
 							}
-
 						}
 						else {
 							isDone = true;

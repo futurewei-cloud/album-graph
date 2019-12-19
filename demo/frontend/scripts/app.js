@@ -201,7 +201,7 @@ class App {
 
 		const FILTER_SECTION_ID = 'filterSection';
 		const FILTER_VIEW_ID = 'filterView';
-		const filterDrawerOpenDefault = true;
+		const filterDrawerOpenDefault = false;
 
 		const eventDrawer = new Drawer({
 			container: self[CONTROL_LAYER],
