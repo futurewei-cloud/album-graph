@@ -11,6 +11,7 @@ module.exports = {
 	mode: 'production',
 	entry: './scripts/app.js',
 	devServer: {
+        host: "0.0.0.0",
 		port: '8082',
 		stats: 'errors-only'
 	},
