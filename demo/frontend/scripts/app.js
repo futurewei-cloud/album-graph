@@ -128,32 +128,33 @@ class App {
 			},
 			filterFunc(node) {
 				if (self[HAS_FILTER_DATA] && node.type === 'image') {
-					if (self[FILTER_DATA].when.length !== 0 && node.meta.datetime) {
-						const date = new Date(node.meta.datetime).valueOf();
+					let result = true;
 
-						if (date >= self[FILTER_DATA].when[0] && date <= self[FILTER_DATA].when[1]) {
+					if (self[FILTER_DATA].when.length !== 0) {
+						if (!node.meta.datetime) {
 							return false;
 						}
+						const date = new Date(node.meta.datetime).valueOf();
+
+						result = result && !(date < self[FILTER_DATA].when[0] || date > self[FILTER_DATA].when[1]);
 					}
 
-					if (self[FILTER_DATA].where.length !== 0 &&
-						node.meta.location &&
-						node.meta.location.includes(self[FILTER_DATA].where[0].id)) {
-						return false;
-					}
+					result = result && self[FILTER_DATA].where.every((item) => {
+						return node.meta.location && node.meta.location.includes(item.id);
+					});
 
-					if (self[FILTER_DATA].who.length !== 0 &&
-						node.meta.person &&
-						node.meta.person.includes(self[FILTER_DATA].who[0].title)) {
-						return false;
-					}
+					result = result && self[FILTER_DATA].who.every((item) => {
+						return node.meta.person && node.meta.person.includes(item.title);
+					});
 
-					return !(self[FILTER_DATA].what.length !== 0 &&
-						node.meta.tag &&
-						node.meta.tag.includes(self[FILTER_DATA].what[0].id));
+					result = result && self[FILTER_DATA].what.every((item) => {
+						return node.meta.tag && node.meta.tag.includes(item.id);
+					});
+
+					return result;
 				}
 
-				return false;
+				return true;
 			},
 			labelExtent: 0,
 			labelExtentOnMouseOver: 0,

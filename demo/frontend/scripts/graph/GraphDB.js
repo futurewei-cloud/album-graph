@@ -169,13 +169,13 @@ const filter = debounce(function() {
 
 			if (filterFunc !== undefined) {
 				data.nodes = data.nodes.filter((node) => {
-					const discard = filterFunc(node);
+					const keep = filterFunc(node);
 
-					if (discard) {
+					if (!keep) {
 						data.edges = data.edges.filter((edge) => !(edge.source.id === node.id || edge.target.id === node.id));
 					}
 
-					return !discard;
+					return keep;
 				});
 			}
 
