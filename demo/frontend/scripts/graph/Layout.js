@@ -1,5 +1,5 @@
 import { event, select, zoom, zoomIdentity } from 'd3';
-import { isNumber, isObject, method, Thickness } from 'type-enforcer-ui';
+import { isNumber, isObject, methodFunction, methodNumber, methodThickness, Thickness } from 'type-enforcer-ui';
 
 const translate = function(x, y) {
 	this[D3_ZOOM].translateBy(this[SVG], x * (1 / this[CURRENT_ZOOM].k), y * (1 / this[CURRENT_ZOOM].k));
@@ -121,8 +121,8 @@ export default class Layout {
 }
 
 Object.assign(Layout.prototype, {
-	onZoom: method.function(),
-	width: method.number({
+	onZoom: methodFunction(),
+	width: methodNumber({
 		set(width) {
 			translate.call(this, (width - this[CURRENT_WIDTH]) / 2, 0);
 			this[CURRENT_WIDTH] = width;
@@ -130,7 +130,7 @@ Object.assign(Layout.prototype, {
 			updateBounds.call(this);
 		}
 	}),
-	height: method.number({
+	height: methodNumber({
 		set(height) {
 			translate.call(this, 0, (height - this[CURRENT_HEIGHT]) / 2);
 			this[CURRENT_HEIGHT] = height;
@@ -138,7 +138,7 @@ Object.assign(Layout.prototype, {
 			updateBounds.call(this);
 		}
 	}),
-	padding: method.thickness({
+	padding: methodThickness({
 		init: new Thickness('20px')
 	})
 });

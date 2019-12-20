@@ -3,7 +3,7 @@ import { json } from 'd3';
 import { IS_PHONE } from 'hafgufa';
 import { List } from 'hord';
 import { clone, forOwn, isEmpty, superimpose } from 'object-agent';
-import { castArray, enforceDate, isDate, isNumber, isString, method } from 'type-enforcer-ui';
+import { castArray, enforceDate, isDate, isNumber, isString, methodFunction } from 'type-enforcer-ui';
 import { DATE_ICON, LOCATION_ICON, PERSON_ICON, SEMANTIC_ICON, TAG_ICON } from './icons';
 
 const TARGET_IMAGES = IS_PHONE ? 50 : 100;
@@ -712,9 +712,9 @@ export default class Load {
 };
 
 Object.assign(Load.prototype, {
-	onQuery: method.function(),
-	onLoad: method.function(),
-	onLoadSearch: method.function(),
-	onLoadEvents: method.function(),
-	onDone: method.function()
+	onQuery: methodFunction(),
+	onLoad: methodFunction(),
+	onLoadSearch: methodFunction(),
+	onLoadEvents: methodFunction(),
+	onDone: methodFunction()
 });

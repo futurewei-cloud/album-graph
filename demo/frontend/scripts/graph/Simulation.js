@@ -1,5 +1,5 @@
 import { forceCollide, forceLink, forceManyBody, forceSimulation, forceX, forceY } from 'd3';
-import { method } from 'type-enforcer-ui';
+import { methodFunction, methodNumber } from 'type-enforcer-ui';
 
 const SIMULATION = Symbol();
 const GRAPH_DB = Symbol();
@@ -83,15 +83,15 @@ export default class Simulation {
 }
 
 Object.assign(Simulation.prototype, {
-	onTick: method.function(),
-	nodeCharge: method.number({
+	onTick: methodFunction(),
+	nodeCharge: methodNumber({
 		init: 20,
 		min: 0
 	}),
-	linkStrength: method.number({
+	linkStrength: methodNumber({
 		init: 0.25
 	}),
-	xStrength: method.number({
+	xStrength: methodNumber({
 		init: 0.1,
 		min: 0,
 		max: 1,
@@ -99,7 +99,7 @@ Object.assign(Simulation.prototype, {
 			this[SIMULATION].force(X_FORCE).strength(xStrength);
 		}
 	}),
-	yStrength: method.number({
+	yStrength: methodNumber({
 		init: 0.1,
 		min: 0,
 		max: 1,

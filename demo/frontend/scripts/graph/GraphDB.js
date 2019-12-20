@@ -1,7 +1,7 @@
 import { List } from 'hord';
 import { debounce } from 'lodash';
 import { combo, forOwn } from 'object-agent';
-import { Enum, method } from 'type-enforcer-ui';
+import { Enum, methodArray, methodBoolean, methodEnum, methodFunction } from 'type-enforcer-ui';
 import WeightNormalizer from './WeightNormalizer';
 
 const processData = (options) => new Promise((resolve) => {
@@ -525,26 +525,26 @@ export default class GraphDB {
 }
 
 Object.assign(GraphDB.prototype, {
-	onFilter: method.function(),
-	onProcessNode: method.function(),
-	onProcessLink: method.function(),
-	isDirected: method.boolean(),
-	normalizeWeights: method.boolean(),
-	hiddenNodeTypes: method.array({
+	onFilter: methodFunction(),
+	onProcessNode: methodFunction(),
+	onProcessLink: methodFunction(),
+	isDirected: methodBoolean(),
+	normalizeWeights: methodBoolean(),
+	hiddenNodeTypes: methodArray({
 		set: filter
 	}),
-	filterFunc: method.function(),
-	calcNodeWeightBy: method.enum({
+	filterFunc: methodFunction(),
+	calcNodeWeightBy: methodEnum({
 		enum: NODE_WEIGHT_TYPES,
 		init: NODE_WEIGHT_TYPES.NONE,
 		set: filter
 	}),
-	calcLinkWeightBy: method.enum({
+	calcLinkWeightBy: methodEnum({
 		enum: LINK_WEIGHT_TYPES,
 		init: LINK_WEIGHT_TYPES.NONE,
 		set: filter
 	}),
-	hideDetachedNodes: method.boolean({
+	hideDetachedNodes: methodBoolean({
 		set: filter
 	})
 });

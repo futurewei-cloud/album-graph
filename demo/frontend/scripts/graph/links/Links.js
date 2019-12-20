@@ -1,4 +1,4 @@
-import { Enum, method, Vector } from 'type-enforcer-ui';
+import { Enum, methodEnum, methodNumber, Vector } from 'type-enforcer-ui';
 import './Links.less';
 
 const LINK_STYLES = new Enum({
@@ -276,15 +276,15 @@ export default class Links {
 }
 
 Object.assign(Links.prototype, {
-	maxLinkSize: method.number({
+	maxLinkSize: methodNumber({
 		init: 4,
 		set: setLinkOffset
 	}),
-	minLinkSize: method.number({
+	minLinkSize: methodNumber({
 		init: 1,
 		set: setLinkOffset
 	}),
-	style: method.enum({
+	style: methodEnum({
 		init: LINK_STYLES.LINE,
 		enum: LINK_STYLES
 	})

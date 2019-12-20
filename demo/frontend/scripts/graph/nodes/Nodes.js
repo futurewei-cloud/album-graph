@@ -1,7 +1,7 @@
 import { drag, event, select } from 'd3';
 import { uniq } from 'lodash';
 import { clone, combo } from 'object-agent';
-import { method } from 'type-enforcer-ui';
+import { methodBoolean, methodFunction, methodInteger, methodNumber } from 'type-enforcer-ui';
 import LabelPlacer from './LabelPlacer';
 import './Nodes.less';
 
@@ -702,32 +702,32 @@ export default class Nodes {
 }
 
 Object.assign(Nodes.prototype, {
-	maxNodeRadius: method.number({
+	maxNodeRadius: methodNumber({
 		init: 15,
 		set: setNodeSizeOffset
 	}),
-	minNodeRadius: method.number({
+	minNodeRadius: methodNumber({
 		init: 4,
 		set: setNodeSizeOffset
 	}),
-	selectedNodeZoom: method.number({
+	selectedNodeZoom: methodNumber({
 		init: 1
 	}),
-	showShortestPaths: method.boolean({
+	showShortestPaths: methodBoolean({
 		init: true
 	}),
-	labelExtent: method.integer({
+	labelExtent: methodInteger({
 		init: 1
 	}),
-	labelExtentOnMouseOver: method.integer({
+	labelExtentOnMouseOver: methodInteger({
 		init: 2
 	}),
-	showLabelsOnNodes: method.boolean(),
-	onSelectionChange: method.function(),
-	zoom: method.number({
+	showLabelsOnNodes: methodBoolean(),
+	onSelectionChange: methodFunction(),
+	zoom: methodNumber({
 		set: setLabelScale
 	}),
-	clip: method.boolean(),
-	onClick: method.function(),
-	singleSelect: method.boolean()
+	clip: methodBoolean(),
+	onClick: methodFunction(),
+	singleSelect: methodBoolean()
 });

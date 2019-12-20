@@ -1,5 +1,5 @@
 import { forOwn } from 'object-agent';
-import { applySettings, method } from 'type-enforcer-ui';
+import { applySettings, methodFunction, methodString } from 'type-enforcer-ui';
 import './ForceGraph.less';
 import GraphDB from './GraphDB';
 import Layout from './Layout';
@@ -283,10 +283,10 @@ export default class ForceGraph {
 }
 
 Object.assign(ForceGraph.prototype, {
-	onRender: method.function(),
-	onProcessNode: method.function(),
-	onProcessLink: method.function(),
-	highlightNodeType: method.string({
+	onRender: methodFunction(),
+	onProcessNode: methodFunction(),
+	onProcessLink: methodFunction(),
+	highlightNodeType: methodString({
 		set(highlightNodeType) {
 			return this[NODES].setStyles(highlightNodeType);
 		}

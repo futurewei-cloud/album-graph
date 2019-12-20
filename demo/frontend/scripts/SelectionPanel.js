@@ -1,5 +1,5 @@
 import { Container, Drawer, Heading, HEADING_LEVELS, Image, IS_PHONE } from 'hafgufa';
-import { castArray, method } from 'type-enforcer-ui';
+import { castArray, methodArray, methodFunction } from 'type-enforcer-ui';
 import { DATE_ICON, LOCATION_ICON, PERSON_ICON, SEMANTIC_ICON, TAG_ICON } from './icons';
 import './SelectionPanel.less';
 
@@ -98,7 +98,7 @@ export default class SelectionPanel {
 }
 
 Object.assign(SelectionPanel.prototype, {
-	selection: method.array({
+	selection: methodArray({
 		set(selection) {
 			const self = this;
 			let content;
@@ -171,5 +171,5 @@ Object.assign(SelectionPanel.prototype, {
 			});
 		}
 	}),
-	onUnSelect: method.function()
+	onUnSelect: methodFunction()
 });

@@ -1,7 +1,7 @@
 import { formatDistanceToNow, formatRelative, isValid } from 'date-fns';
 import { Container, Div, Heading, HEADING_LEVELS, IS_DESKTOP, Picker, Slider, Timeline, TooltipMixin } from 'hafgufa';
 import { Collection, compare, Model } from 'hord';
-import { applySettings, CssSize, DockPoint, method } from 'type-enforcer-ui';
+import { applySettings, CssSize, DockPoint, methodArray, methodFunction } from 'type-enforcer-ui';
 import './FilterView.less';
 import { DATE_ICON, LOCATION_ICON, PERSON_ICON, TAG_ICON } from './icons';
 
@@ -250,7 +250,7 @@ export default class FilterView extends Div {
 }
 
 Object.assign(FilterView.prototype, {
-	tags: method.array({
+	tags: methodArray({
 		set(tags) {
 			this.get(TAG_PICKER_ID).options({
 				isMultiSelect: true,
@@ -258,7 +258,7 @@ Object.assign(FilterView.prototype, {
 			});
 		}
 	}),
-	locations: method.array({
+	locations: methodArray({
 		set(locations) {
 			this.get(LOCATION_PICKER_ID).options({
 				isMultiSelect: true,
@@ -266,7 +266,7 @@ Object.assign(FilterView.prototype, {
 			});
 		}
 	}),
-	people: method.array({
+	people: methodArray({
 		set(people) {
 			this.get(PERSON_PICKER_ID).options({
 				isMultiSelect: true,
@@ -274,5 +274,5 @@ Object.assign(FilterView.prototype, {
 			});
 		}
 	}),
-	onChange: method.function()
+	onChange: methodFunction()
 });
