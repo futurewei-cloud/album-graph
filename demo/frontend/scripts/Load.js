@@ -171,17 +171,25 @@ export default class Load {
 			};
 
 			const load = (id) => {
-				Load.getEventImages(id)
-					.then((images) => {
-						const minDate = new Date('9/1/2010').valueOf();
-						const maxDate = new Date().valueOf();
+				let images = [];
 
+				Load.getEventImages(id)
+					.then((data) => {
+						images = Object.keys(data);
+
+						if (isEmpty(images)) {
+							isDone = true;
+						}
+
+						return isEmpty(images) ?
+							new Promise((resolve) => resolve()) :
+							Load.loadJson('img', `output=datetime&arg=${images[0]}`);
+					})
+					.then((date) => {
 						eventLoadCount--;
 
 						if (!isEmpty(images)) {
 							const label = 'Event ' + id;
-
-							images = Object.keys(images);
 
 							if (!isEmpty(images)) {
 								self[CACHE][label] = images;
@@ -189,13 +197,10 @@ export default class Load {
 								self[EVENTS].push({
 									tag: label,
 									id: id,
-									date: id === 1 ? new Date() : new Date(Math.round(Math.random() * (maxDate - minDate)) + minDate),
+									date: new Date(date[0]),
 									images: images
 								});
 							}
-						}
-						else {
-							isDone = true;
 						}
 
 						loadChunk();
