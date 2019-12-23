@@ -228,7 +228,9 @@ class App {
 				isCollapsed: !filterDrawerOpenDefault,
 				onCollapse() {
 					eventDrawer.isOpen(!this.isCollapsed());
-					self[FILTER_VIEW].resize(true);
+					delay(() => {
+						self[FILTER_VIEW].resize(true);
+					});
 				},
 				content: {
 					control: FilterView,
