@@ -134,7 +134,7 @@ export default class Load {
 
 						self.data.nodes.forEach((node) => {
 							if (ids.includes(node.id) && !isEmpty(node.meta)) {
-								node.meta.person.push(clusterId);
+								node.meta.person.push('Person ' + clusterId);
 								isUpdate = true;
 							}
 						});
@@ -585,7 +585,7 @@ export default class Load {
 				location: [data.city[0], data.state[0], data.country[0]].filter((item) => item !== ''),
 				person: self[PEOPLE].reduce((result, person) => {
 					if (person.images.includes(data.id)) {
-						result.push(person.clusterId);
+						result.push('Person ' + person.clusterId);
 					}
 					return result;
 				}, [])

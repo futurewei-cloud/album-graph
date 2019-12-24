@@ -140,7 +140,7 @@ class App {
 					}
 
 					result = result && self[FILTER_DATA].where.every((item) => {
-						return node.meta.location && node.meta.location.includes(item.id);
+						return node.meta.location && node.meta.location.includes(item.title);
 					});
 
 					result = result && self[FILTER_DATA].who.every((item) => {
