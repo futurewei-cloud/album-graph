@@ -1,5 +1,5 @@
 # Album graph demo
-![figure](Screenshot.png)
+![figure](album_graph_screenshot.png)
 
 ## Requirements
 ---------------------------------------------
