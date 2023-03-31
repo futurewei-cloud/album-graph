@@ -1,3 +1,5 @@
+"This Project has been archived by the owner, who is no longer providing support.  The project remains available to authorized users on a "read only" basis."
+
 # Album Graph
 
 This repository provides an implementation for **Album Graph**, which is a framework based on an alternated property graph model incorporating with arbitrary plugins of AI models for organizing multimedia resources, such as photos/videos, in various ways. Alubm graph offers an innovative approach to support semantic photo search/recommendation, style based photo organized, and more.
